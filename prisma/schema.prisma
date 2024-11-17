@@ -1,0 +1,265 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // change to your database provider
+  url      = env("DATABASE_URL")
+}
+
+model file {
+  id   String @id @default(uuid())
+  name String
+  size Int
+  sort Int
+}
+
+model role {
+  id          Int       @id @default(autoincrement())
+  name        String
+  permissions Int[]     @default([])
+  // agar hamma lokatsiyaga dostup bo'lsa location id bo'lmaydi
+  location_id Int?
+  location    location? @relation(fields: [location_id], references: [id])
+  // 
+  users       user[]
+}
+
+model user {
+  id                   Int        @id @default(autoincrement())
+  first_name           String
+  last_name            String?
+  phone                String?
+  extra                String?
+  password             String?
+  gender               String?
+  birth_date           DateTime?
+  phone_verified       Boolean    @default(false)
+  telegram_id          String?
+  passport_id          String?    @unique()
+  passport_image       String?
+  created_at           DateTime   @default(now())
+  updated_at           DateTime   @default(now())
+  deleted_at           DateTime?
+  extra_phone          String?
+  extra_phone_second   String?
+  passport_pin         String?    @unique()
+  status               Int?       @default(1)
+  balance              Int?       @default(0)
+  blocking_reason      String?
+  registered_locations Int[]      @default([])
+  // 
+  address_id           Int?
+  address              address?   @relation(fields: [address_id], references: [id])
+  // 
+  role_id              Int?
+  role                 role?      @relation(fields: [role_id], references: [id])
+  // 
+  rents                rent[]
+  sms                  sms[]
+  sms_bulks            sms_bulk[]
+}
+
+model address {
+  id           Int        @id @default(autoincrement())
+  region       String
+  town         String?
+  address_line String
+  latitude     Float?
+  longitude    Float?
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now())
+  country_code String     @default("uz")
+  street       String?
+  home         String?
+  // 
+  location     location[]
+  user         user[]
+}
+
+model location {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?
+  active      Boolean   @default(true)
+  link        String?
+  // 
+  address_id  Int?
+  address     address?  @relation(fields: [address_id], references: [id])
+  // 
+  region_id   Int?
+  region      region?   @relation(fields: [region_id], references: [id])
+  // 
+  stocks      stock[]
+  rents       rent[]
+  role        role[]
+}
+
+model region {
+  id         Int        @id @default(autoincrement())
+  name       String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+  deleted_at DateTime?
+  // 
+  locations  location[]
+}
+
+model rent {
+  id             Int       @id @default(autoincrement())
+  leased_at      DateTime
+  returning_date DateTime
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+  deleted_at     DateTime?
+  custom_id      Int?
+  rejected       Boolean   @default(false)
+  returned_at    DateTime?
+  // 
+  user_id        Int
+  user           user      @relation(fields: [user_id], references: [id])
+  //
+  stock_id       Int
+  stock          stock     @relation(fields: [stock_id], references: [id])
+  // 
+  location_id    Int
+  location       location  @relation(fields: [location_id], references: [id])
+  // 
+  comment        comment[]
+}
+
+model stock {
+  id          Int       @id @default(autoincrement())
+  busy        Boolean   @default(false)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?
+  description String?
+  status      Int?
+  price       Int?      @default(50000)
+  // qaysi yo'l bilan kutubxanaga kelgan
+  // enum yangi | hadya
+  source      Int
+  // 
+  location_id Int
+  location    location  @relation(fields: [location_id], references: [id])
+  //
+  book_id     Int
+  book        book      @relation(fields: [book_id], references: [id])
+  // 
+  rents       rent[]
+}
+
+model comment {
+  id         Int      @id @default(autoincrement())
+  text       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  user_id    Int
+  rent_id    Int?
+  book_id    Int?
+  // 
+  book       book?    @relation(fields: [book_id], references: [id])
+  rent       rent?    @relation(fields: [rent_id], references: [id])
+}
+
+model log {
+  id          Int      @id @default(autoincrement())
+  path        String
+  method      String
+  data        Json
+  created_at  DateTime @default(now())
+  resourse    String
+  resourse_id Int
+  user_id     Int
+}
+
+model sms {
+  id                  Int       @id @default(autoincrement())
+  phone               String
+  status              Int       @default(1)
+  user_id             Int?
+  sms_bulk_id         Int?
+  text                String?
+  provider            Int?
+  provider_message_id String?
+  error_reason        String?
+  // 
+  user                user?     @relation(fields: [user_id], references: [id])
+  sms_bulk            sms_bulk? @relation(fields: [sms_bulk_id], references: [id])
+}
+
+model sms_bulk {
+  id         Int       @id @default(autoincrement())
+  text       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  user_id    Int?
+  // 
+  user       user?     @relation(fields: [user_id], references: [id])
+  // 
+  sms        sms[]
+}
+
+model publishing {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+}
+
+model collection {
+  id         Int       @id @default(autoincrement())
+  name       String
+  sort       Int?      @default(0)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  // 
+  books      book[]
+}
+
+model author {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  creator_id Int?
+  // 
+  books      book[]
+}
+
+model book {
+  id              Int         @id @default(autoincrement())
+  name            String
+  searchable_name String
+  description     String?
+  image           String?
+  rent_duration   Int?        @default(15)
+  printed_at      DateTime?
+  pages           Int?
+  sort            Int?        @default(0)
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @default(now())
+  deleted_at      DateTime?
+  author_id       Int?
+  books_group_id  Int?
+  collection_id   Int?
+  isbn            String?
+  few             Int?        @default(2)
+  language        String?     @default("uz")
+  // 
+  author          author?     @relation(fields: [author_id], references: [id])
+  collection      collection? @relation(fields: [collection_id], references: [id])
+  // 
+  stocks          stock[]
+  comment         comment[]
+}
