@@ -1,15 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { ParamIdDto } from 'src/common/dto/param-id.dto';
+import { rent } from '@prisma/client';
+import { ResponseItems } from 'src/common/decorators/swagger.decorators';
+import { GetOneLiDto } from 'src/common/dto/common.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ReqUser } from '../auth/auth.interface';
-import { CreateUpdateRentDto, GetListRentDto } from './rents.dto';
+import { CreateRentDto, GetListRentDto, UpdateRentDto } from './rents.dto';
 
 @Injectable()
 export class RentsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createRentDto: CreateUpdateRentDto, currentUser: ReqUser) {
+  async create(createRentDto: CreateRentDto, currentUser: ReqUser) {
     const current_user_location = currentUser.locationId;
 
     if (!current_user_location) {
@@ -55,17 +56,17 @@ export class RentsService {
       throw new BadRequestException('User not found or inactive');
     }
 
-    // Check if user has active rents
-    const activeRents = await this.prisma.rent.count({
-      where: {
-        user_id: createRentDto.user_id,
-        returned_at: null,
-        rejected: false,
-        deleted_at: null,
-      },
-    });
-
     // TODO
+    // Check if user has active rents
+    // const activeRents = await this.prisma.rent.count({
+    //   where: {
+    //     user_id: createRentDto.user_id,
+    //     returned_at: null,
+    //     rejected: false,
+    //     deleted_at: null,
+    //   },
+    // });
+
     // Get total available books of this type
     // const totalAvailableBooks = await this.prisma.stock.count({
     //   where: {
@@ -153,26 +154,33 @@ export class RentsService {
     }
   }
 
-  async findOne(dto: ParamIdDto) {
+  async findOne(dto: GetOneLiDto) {
     return this.prisma.rent.findFirst({
       where: dto,
     });
   }
 
-  async findAll(dto: GetListRentDto, user: ReqUser) {
-    const filters: Prisma.rentWhereInput = {
-      deleted_at: null,
-      location_id: user.locationId,
-    };
+  async update(dto: UpdateRentDto) {
+    await this.prisma.rent.update({
+      where: { id: dto.id, location_id: dto.location_id },
+      data: {},
+    });
 
+    return this.findOne(dto);
+  }
+
+  // TODO
+  // shablonlashtirish kerak
+  // paginatsiyalarni bitta funksiyaga ajratib qo'yish kerak
+  async findAll(dto: GetListRentDto): Promise<ResponseItems<rent>> {
     const [total, rents] = await Promise.all([
-      this.prisma.rent.count({ where: filters }),
+      this.prisma.rent.count({ where: dto.filter }),
       this.prisma.rent.findMany({
         where: dto.filter,
         include: {
           stock: true,
         },
-        orderBy: { updated_at: dto.order },
+        orderBy: { [dto.order_by || 'updated_at']: dto.order },
         skip: (dto.page - 1) * dto.limit,
         take: dto.limit,
       }),
@@ -180,10 +188,8 @@ export class RentsService {
 
     return {
       total,
-      data: rents,
+      items: rents,
       page: dto.page,
-      limit: dto.limit,
-      pageCount: Math.ceil(total / dto.limit),
     };
   }
 }

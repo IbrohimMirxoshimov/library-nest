@@ -1,14 +1,16 @@
 // src/modules/auth/auth.service.ts
 
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
-  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { LoginDto, RegisterDto } from './auth.dto';
-import * as bcrypt from 'bcrypt';
+import { JwtPayload } from './auth.interface';
+import { user } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -18,8 +20,6 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginDto) {
-    console.log(dto);
-
     const user = await this.prisma.user.findFirst({
       where: { phone: dto.phone, deleted_at: null },
       include: { role: true },
@@ -34,8 +34,14 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    return this.generateJwt(user);
+  }
+
+  generateJwt(user: user) {
+    const payload: JwtPayload = { sub: user.id };
+
     return {
-      access_token: this.jwtService.sign({ sub: user.id }),
+      access_token: this.jwtService.sign(payload),
       user: user,
     };
   }
@@ -70,9 +76,6 @@ export class AuthService {
       include: { role: true },
     });
 
-    return {
-      access_token: this.jwtService.sign({ sub: user.id }),
-      user: user,
-    };
+    return this.generateJwt(user);
   }
 }

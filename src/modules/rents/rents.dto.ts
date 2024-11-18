@@ -1,60 +1,75 @@
 // create-rent.dto.ts
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
-  IsNotEmpty,
-  IsInt,
-  IsOptional,
   IsDate,
-  ValidateNested,
+  IsEnum,
+  IsInt,
   IsObject,
+  IsOptional,
+  ValidateNested,
 } from 'class-validator';
-import { GetListDto } from 'src/common/dto/get-list';
+import { DateTimeRangeDto, LocationIdDto } from 'src/common/dto/common.dto';
+import { GetListDto } from 'src/common/dto/get-list.dto';
+import { ApiEnum } from 'src/utils/swagger/ApiEnum';
+import { ClassImplementation } from 'src/utils/type.utils';
 
-export class CreateUpdateRentDto {
-  @IsNotEmpty()
+export class CreateRentDto
+  extends LocationIdDto
+  implements ClassImplementation<Prisma.rentCreateInput>
+{
+  @ApiProperty()
   @IsInt()
   user_id: number;
 
-  @IsNotEmpty()
+  @ApiProperty()
   @IsInt()
   stock_id: number;
 
+  @ApiProperty()
+  @IsDate()
+  returning_date: string;
+
+  @ApiPropertyOptional()
+  leased_at?: string;
+
+  @ApiPropertyOptional()
   @IsOptional()
   @IsInt()
   custom_id?: number;
 }
-type ClassImplementation<T> = {
-  [K in keyof T]: T[K];
-};
 
-export class DateTimeNullableFilter
-  implements ClassImplementation<Prisma.DateTimeNullableFilter>
-{
+export class UpdateRentDto extends PartialType(CreateRentDto) {
   @ApiProperty()
-  @IsDate()
-  gte: string;
-
-  @ApiProperty()
-  @IsDate()
-  lte: string;
+  @IsInt()
+  id: number;
 }
 
-export class RentFilter implements ClassImplementation<Prisma.rentWhereInput> {
-  @ApiPropertyOptional({ type: () => DateTimeNullableFilter })
+class RentFilterDto
+  extends LocationIdDto
+  implements ClassImplementation<Prisma.rentWhereInput>
+{
+  @ApiPropertyOptional({ type: () => DateTimeRangeDto })
   @ValidateNested()
-  @Type(() => DateTimeNullableFilter)
+  @Type(() => DateTimeRangeDto)
   @IsObject()
   @IsOptional()
-  returned_at?: DateTimeNullableFilter;
+  returned_at?: DateTimeRangeDto;
 }
 
 export class GetListRentDto extends GetListDto {
-  @ApiPropertyOptional({ type: () => RentFilter })
+  @ApiPropertyOptional({ type: () => RentFilterDto })
   @ValidateNested()
-  @Type(() => RentFilter)
+  @Type(() => RentFilterDto)
   @IsObject()
   @IsOptional()
-  filter: RentFilter;
+  filter: RentFilterDto;
+
+  @ApiEnum(Prisma.RentScalarFieldEnum, {
+    type: String,
+  })
+  @IsEnum(Prisma.RentScalarFieldEnum)
+  @IsOptional()
+  order_by?: Prisma.RentScalarFieldEnum;
 }

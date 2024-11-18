@@ -28,8 +28,8 @@ const seedMain = async () => {
   if (!user) {
     await authSerice.register({
       first_name: 'Admin',
-      password: 'test',
-      phone: '+998001112233',
+      password: 'test11',
+      phone: '998001112233',
       role_id: role.id,
     });
   }
