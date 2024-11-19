@@ -7,16 +7,15 @@ import {
   IsPhoneNumber,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsUzbPhoneNumber } from 'src/common/class-validators/IsUzbPhoneNumber';
 
 export class LoginDto {
   @ApiProperty({ example: '998001112233', description: 'User phone number' })
-  @IsString()
-  @IsNotEmpty()
+  @IsUzbPhoneNumber()
   phone: string;
 
   @ApiProperty({ example: 'test11', description: 'User password' })
   @IsString()
-  @IsNotEmpty()
   @MinLength(6)
   password: string;
 }
