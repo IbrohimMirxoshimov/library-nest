@@ -133,7 +133,7 @@ export class RentsService implements ICrudService<rent> {
       data: dto,
     });
 
-    return this.findOne(dto);
+    return this.findOne(find_dto);
   }
 
   async remove(find_dto: FindOneLiDto) {

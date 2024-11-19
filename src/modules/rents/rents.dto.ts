@@ -39,11 +39,7 @@ export class CreateRentDto
   custom_id?: number;
 }
 
-export class UpdateRentDto extends CreateRentDto {
-  @ApiProperty()
-  @IsInt()
-  id: number;
-}
+export class UpdateRentDto extends CreateRentDto {}
 
 class RentFilterDto
   extends LocationIdDto
