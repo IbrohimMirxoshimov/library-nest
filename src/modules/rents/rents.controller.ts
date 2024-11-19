@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
@@ -6,10 +6,10 @@ import {
   RequireLocation,
   RequirePermissions,
 } from 'src/common/decorators/permissions.decorators';
-import { GetOneLiDto } from 'src/common/dto/common.dto';
+import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { ReqUser } from '../auth/auth.interface';
-import { CreateRentDto, GetListRentDto, UpdateRentDto } from './rents.dto';
+import { CreateRentDto, FindAllRentDto, UpdateRentDto } from './rents.dto';
 import { RentsService } from './rents.service';
 
 @ApiBearerAuth()
@@ -26,19 +26,22 @@ export class RentsController {
 
   @RequirePermissions(Permissions.RENT_READ)
   @Post('list')
-  findAll(@Body() dto: GetListRentDto) {
+  findAll(@Body() dto: FindAllRentDto) {
     return this.rentsService.findAll(dto);
   }
 
   @RequirePermissions(Permissions.RENT_READ)
-  @Post('item')
-  findOne(@Body() dto: GetOneLiDto) {
+  @Get('/:id')
+  findOne(@Param() dto: FindOneLiDto) {
     return this.rentsService.findOne(dto).then(throwErrorIfNotFound);
   }
 
-  @Patch()
-  update(@Body() dto: UpdateRentDto) {
-    return this.rentsService.update(dto);
+  @Put('/:id')
+  @RequirePermissions(Permissions.RENT_UPDATE)
+  update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateRentDto) {
+    console.log(find_dto);
+
+    return this.rentsService.update(find_dto, dto);
   }
 
   // @Delete(':id')

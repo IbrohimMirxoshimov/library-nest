@@ -47,6 +47,11 @@ export class PermissionGuard implements CanActivate {
       } else {
         request.body.location_id = user.locationId;
       }
+
+      // parametrli zaproslarda ishlashi uchun
+      if (request.params) {
+        request.params.location_id = user.locationId;
+      }
     }
 
     // Check if user has all required permissions

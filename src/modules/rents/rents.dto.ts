@@ -6,12 +6,13 @@ import {
   IsDate,
   IsEnum,
   IsInt,
+  IsISO8601,
   IsObject,
   IsOptional,
   ValidateNested,
 } from 'class-validator';
 import { DateTimeRangeDto, LocationIdDto } from 'src/common/dto/common.dto';
-import { GetListDto } from 'src/common/dto/get-list.dto';
+import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ClassImplementation } from 'src/utils/type.utils';
 
@@ -27,8 +28,8 @@ export class CreateRentDto
   @IsInt()
   stock_id: number;
 
-  @ApiProperty()
-  @IsDate()
+  @ApiProperty({ example: new Date().toISOString() })
+  @IsISO8601()
   returning_date: string;
 
   @ApiPropertyOptional()
@@ -40,7 +41,7 @@ export class CreateRentDto
   custom_id?: number;
 }
 
-export class UpdateRentDto extends PartialType(CreateRentDto) {
+export class UpdateRentDto extends CreateRentDto {
   @ApiProperty()
   @IsInt()
   id: number;
@@ -58,7 +59,7 @@ class RentFilterDto
   returned_at?: DateTimeRangeDto;
 }
 
-export class GetListRentDto extends GetListDto {
+export class FindAllRentDto extends FindAllDto {
   @ApiPropertyOptional({ type: () => RentFilterDto })
   @ValidateNested()
   @Type(() => RentFilterDto)

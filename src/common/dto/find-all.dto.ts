@@ -9,7 +9,7 @@ export enum SqlOrderEnum {
   DESC = 'desc',
 }
 
-export class GetListDto {
+export class FindAllDto {
   @ApiPropertyOptional({ default: 10, maximum: 100 })
   @Transform(transformToNumber)
   @IsInt()
@@ -34,4 +34,6 @@ export class GetListDto {
   @ApiPropertyOptional()
   @IsOptional()
   order_by?: string;
+
+  filter?: unknown;
 }

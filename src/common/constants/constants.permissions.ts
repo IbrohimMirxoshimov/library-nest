@@ -29,7 +29,4 @@ export const Permissions = {
   AUTHOR_READ: 42,
   AUTHOR_UPDATE: 43,
   AUTHOR_DELETE: 44,
-
-  // other
-  USER_WITH_LOCATION: 45,
 } as const;
