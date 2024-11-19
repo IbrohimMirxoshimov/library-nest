@@ -25,7 +25,7 @@ export class RentsController {
   }
 
   @RequirePermissions(Permissions.RENT_READ)
-  @Post('list')
+  @Post('get-list')
   findAll(@Body() dto: FindAllRentDto) {
     return this.rentsService.findAll(dto);
   }
