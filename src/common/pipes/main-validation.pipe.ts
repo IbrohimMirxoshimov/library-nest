@@ -6,7 +6,7 @@ import {
   ValidationPipeOptions,
 } from '@nestjs/common';
 
-export function errorFormatter(
+function errorFormatter(
   errors: ValidationError[],
   errMessage?: any,
   parentField?: string,
@@ -48,6 +48,4 @@ const validationOptions: ValidationPipeOptions = {
     ),
 };
 
-export const MainValidationPipeInstence = new ValidationPipe(validationOptions);
-
-export default validationOptions;
+export const MainValidationPipe = new ValidationPipe(validationOptions);
