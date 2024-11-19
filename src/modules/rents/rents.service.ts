@@ -136,6 +136,15 @@ export class RentsService implements ICrudService<rent> {
     return this.findOne(dto);
   }
 
+  async remove(find_dto: FindOneLiDto) {
+    await this.prisma.rent.update({
+      where: find_dto,
+      data: {
+        deleted_at: new Date(),
+      },
+    });
+  }
+
   async findAll(dto: FindAllRentDto) {
     const pagination = await getPaginationResponse({
       items: this.prisma.rent.findMany({

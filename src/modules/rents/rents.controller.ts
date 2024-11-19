@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
@@ -44,8 +52,8 @@ export class RentsController {
     return this.rentsService.update(find_dto, dto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.rentsService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param() find_dto: FindOneLiDto) {
+    return this.rentsService.remove(find_dto);
+  }
 }
