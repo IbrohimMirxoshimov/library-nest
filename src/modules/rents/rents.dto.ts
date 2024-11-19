@@ -1,15 +1,10 @@
 // create-rent.dto.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { IsEnum, IsInt, IsISO8601, IsOptional } from 'class-validator';
 import {
-  IsEnum,
-  IsInt,
-  IsISO8601,
-  IsOptional,
-} from 'class-validator';
-import {
-  IsDateTimeRange,
   DateTimeRangeDto,
+  IsDateTimeRange,
 } from 'src/common/class-validators/IsDateTimeRange';
 import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
 import { LocationIdDto } from 'src/common/dto/common.dto';
