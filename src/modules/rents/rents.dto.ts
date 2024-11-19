@@ -1,14 +1,11 @@
 // create-rent.dto.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsInt,
   IsISO8601,
-  IsObject,
   IsOptional,
-  ValidateNested,
 } from 'class-validator';
 import {
   IsDateTimeRange,
@@ -20,6 +17,7 @@ import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
+import { ApplyNestedOptional } from '../../common/class-validators/ApplyNested';
 
 export class CreateRentDto
   extends LocationIdDto
@@ -66,11 +64,7 @@ class RentFilterDto
 }
 
 export class FindAllRentDto extends FindAllDto {
-  @ApiPropertyOptional({ type: () => RentFilterDto })
-  @ValidateNested()
-  @Type(() => RentFilterDto)
-  @IsObject()
-  @IsOptional()
+  @ApplyNestedOptional(RentFilterDto)
   filter?: RentFilterDto;
 
   @ApiEnum(Prisma.RentScalarFieldEnum, {
