@@ -1,9 +1,8 @@
 // create-rent.dto.ts
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
-  IsDate,
   IsEnum,
   IsInt,
   IsISO8601,
@@ -11,9 +10,15 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import { DateTimeRangeDto, LocationIdDto } from 'src/common/dto/common.dto';
+import {
+  IsDateTimeRange,
+  DateTimeRangeDto,
+} from 'src/common/class-validators/IsDateTimeRange';
+import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
+import { LocationIdDto } from 'src/common/dto/common.dto';
 import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
+import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
 
 export class CreateRentDto
@@ -51,12 +56,13 @@ class RentFilterDto
   extends LocationIdDto
   implements ClassImplementation<Prisma.rentWhereInput>
 {
-  @ApiPropertyOptional({ type: () => DateTimeRangeDto })
-  @ValidateNested()
-  @Type(() => DateTimeRangeDto)
-  @IsObject()
-  @IsOptional()
+  @IsDateTimeRange()
   returned_at?: DateTimeRangeDto;
+
+  @ApiPrismaIntFilter()
+  @IsOptional()
+  @IsPrismaIntFilter()
+  id?: number | Prisma.IntFilter<'rent'> | undefined;
 }
 
 export class FindAllRentDto extends FindAllDto {
@@ -65,7 +71,7 @@ export class FindAllRentDto extends FindAllDto {
   @Type(() => RentFilterDto)
   @IsObject()
   @IsOptional()
-  filter: RentFilterDto;
+  filter?: RentFilterDto;
 
   @ApiEnum(Prisma.RentScalarFieldEnum, {
     type: String,

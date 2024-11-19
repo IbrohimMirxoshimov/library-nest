@@ -32,19 +32,3 @@ export class FindOneDto {
   @IsInt()
   id: number;
 }
-
-export class DateTimeRangeDto
-  implements ClassImplementation<Prisma.DateTimeNullableFilter>
-{
-  @ApiProperty({
-    example: new Date().toISOString(),
-  })
-  @IsISO8601()
-  gte: string;
-
-  @ApiProperty({
-    example: new Date().toISOString(),
-  })
-  @IsISO8601()
-  lte: string;
-}
