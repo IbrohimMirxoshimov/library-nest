@@ -41,6 +41,7 @@ export class ${capitalizeFirst(name)}Controller {
   constructor(private readonly ${name}Service: ${capitalizeFirst(name)}Service) {}
 
   @RequirePermissions(Permissions.${name.toUpperCase()}_CREATE)
+  !change it
   @RequireLocation()
   @Post()
   create(@Body() dto: Create${capitalizeFirst(name)}Dto) {
@@ -60,12 +61,16 @@ export class ${capitalizeFirst(name)}Controller {
   }
 
   @Put('/:id')
+  !change it
+  @RequireLocation()
   @RequirePermissions(Permissions.${name.toUpperCase()}_UPDATE)
   update(@Param() find_dto: FindOneLiDto, @Body() dto: Update${capitalizeFirst(name)}Dto) {
     return this.${name}Service.update(find_dto, dto);
   }
 
   @Delete(':id')
+  !change it
+  @RequireLocation()
   remove(@Param() find_dto: FindOneLiDto) {
     return this.${name}Service.remove(find_dto);
   }
@@ -176,15 +181,7 @@ function createModuleFiles(moduleName: string, basePath: string) {
 
 // Main execution
 const moduleNames = [
-  'users',
-  'roles',
-  'locations',
-  'books',
-  'authors',
-  'stocks',
-  'publishings',
-  'sms',
-  'logs',
+  'customer',
 ];
 
 // Get the base path (assuming the script is run from the project root)
