@@ -1,11 +1,11 @@
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
+import { MainValidationPipe } from './common/pipes/main-validation.pipe';
 import { app_config } from './config/app.config';
 import { PrismaErrorFilter } from './prisma/prisma.error.filter';
-import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +18,7 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  app.useGlobalPipes(new ValidationPipe(validationOptions));
+  app.useGlobalPipes(MainValidationPipe);
   app.useGlobalFilters(new PrismaErrorFilter());
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
