@@ -10,7 +10,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { GetListDto } from '../../common/dto/get-list.dto';
+import { FindAllDto } from '../../common/dto/find-all.dto';
 import { Transform, Type } from 'class-transformer';
 import { ApiEnum } from '../../utils/swagger/ApiEnum';
 
@@ -49,7 +49,7 @@ class AuthorFilterDto implements ClassImplementation<Prisma.authorWhereInput> {
   name?: string;
 }
 
-export class GetListAuthorDto extends GetListDto {
+export class GetListAuthorDto extends FindAllDto {
   @ApiPropertyOptional({ type: () => AuthorFilterDto })
   @ValidateNested()
   @Type(() => AuthorFilterDto)

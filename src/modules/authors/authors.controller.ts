@@ -10,7 +10,7 @@ import {
   GetListAuthorDto,
   UpdateAuthorDto,
 } from './authors.dto';
-import { GetOneDto } from '../../common/dto/common.dto';
+import { FindOneDto } from '../../common/dto/common.dto';
 import { throwErrorIfNotFound } from '../../utils/response.utils';
 
 @ApiBearerAuth()
@@ -32,7 +32,7 @@ export class AuthorsController {
 
   @RequirePermissions(Permissions.AUTHOR_READ)
   @Post('item')
-  findOne(@Body() dto: GetOneDto) {
+  findOne(@Body() dto: FindOneDto) {
     return this.authorsService.findOne(dto).then(throwErrorIfNotFound);
   }
 

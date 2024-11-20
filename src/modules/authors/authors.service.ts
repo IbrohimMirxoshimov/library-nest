@@ -6,9 +6,7 @@ import {
   UpdateAuthorDto,
 } from './authors.dto';
 import { ReqUser } from '../auth/auth.interface';
-import { ResponseItems } from '../../common/decorators/swagger.decorators';
-import { author } from '@prisma/client';
-import { GetOneDto } from '../../common/dto/common.dto';
+import { FindOneDto } from '../../common/dto/common.dto';
 
 @Injectable()
 export class AuthorsService {
@@ -42,7 +40,7 @@ export class AuthorsService {
     }
   }
 
-  async findOne(dto: GetOneDto) {
+  async findOne(dto: FindOneDto) {
     return this.prisma.author.findFirst({
       where: dto,
     });
@@ -64,7 +62,7 @@ export class AuthorsService {
     return { id };
   }
 
-  async findAll(dto: GetListAuthorDto): Promise<ResponseItems<author>> {
+  async findAll(dto: GetListAuthorDto) {
     const [total, authors] = await Promise.all([
       this.prisma.author.count({ where: dto.filter }),
       this.prisma.author.findMany({
