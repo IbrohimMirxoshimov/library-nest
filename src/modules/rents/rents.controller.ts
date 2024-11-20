@@ -52,7 +52,7 @@ export class RentsController {
     return this.rentsService.update(find_dto, dto);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   remove(@Param() find_dto: FindOneLiDto) {
     return this.rentsService.remove(find_dto);
   }
