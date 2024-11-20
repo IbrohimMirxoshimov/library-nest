@@ -1,19 +1,18 @@
 // create-rent.dto.ts
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { Type } from 'class-transformer';
+import { IsEnum, IsInt, IsISO8601, IsOptional } from 'class-validator';
 import {
-  IsDate,
-  IsEnum,
-  IsInt,
-  IsObject,
-  IsOptional,
-  ValidateNested,
-} from 'class-validator';
-import { DateTimeRangeDto, LocationIdDto } from 'src/common/dto/common.dto';
-import { GetListDto } from 'src/common/dto/get-list.dto';
+  DateTimeRangeDto,
+  IsDateTimeRange,
+} from 'src/common/class-validators/IsDateTimeRange';
+import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
+import { LocationIdDto } from 'src/common/dto/common.dto';
+import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
+import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
+import { ApplyNestedOptional } from '../../common/class-validators/ApplyNested';
 
 export class CreateRentDto
   extends LocationIdDto
@@ -27,8 +26,8 @@ export class CreateRentDto
   @IsInt()
   stock_id: number;
 
-  @ApiProperty()
-  @IsDate()
+  @ApiProperty({ example: new Date().toISOString() })
+  @IsISO8601()
   returning_date: string;
 
   @ApiPropertyOptional()
@@ -40,31 +39,24 @@ export class CreateRentDto
   custom_id?: number;
 }
 
-export class UpdateRentDto extends PartialType(CreateRentDto) {
-  @ApiProperty()
-  @IsInt()
-  id: number;
-}
+export class UpdateRentDto extends CreateRentDto {}
 
 class RentFilterDto
   extends LocationIdDto
   implements ClassImplementation<Prisma.rentWhereInput>
 {
-  @ApiPropertyOptional({ type: () => DateTimeRangeDto })
-  @ValidateNested()
-  @Type(() => DateTimeRangeDto)
-  @IsObject()
-  @IsOptional()
+  @IsDateTimeRange()
   returned_at?: DateTimeRangeDto;
+
+  @ApiPrismaIntFilter()
+  @IsOptional()
+  @IsPrismaIntFilter()
+  id?: number | Prisma.IntFilter<'rent'> | undefined;
 }
 
-export class GetListRentDto extends GetListDto {
-  @ApiPropertyOptional({ type: () => RentFilterDto })
-  @ValidateNested()
-  @Type(() => RentFilterDto)
-  @IsObject()
-  @IsOptional()
-  filter: RentFilterDto;
+export class FindAllRentDto extends FindAllDto {
+  @ApplyNestedOptional(RentFilterDto)
+  filter?: RentFilterDto;
 
   @ApiEnum(Prisma.RentScalarFieldEnum, {
     type: String,

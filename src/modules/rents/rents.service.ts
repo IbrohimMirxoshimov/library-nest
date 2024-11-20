@@ -1,13 +1,17 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { rent } from '@prisma/client';
-import { ResponseItems } from 'src/common/decorators/swagger.decorators';
-import { GetOneLiDto } from 'src/common/dto/common.dto';
+import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from 'src/utils/pagination.utils';
+import { ICrudService } from '../../common/interfaces/crud.interface';
 import { ReqUser } from '../auth/auth.interface';
-import { CreateRentDto, GetListRentDto, UpdateRentDto } from './rents.dto';
+import { CreateRentDto, FindAllRentDto, UpdateRentDto } from './rents.dto';
 
 @Injectable()
-export class RentsService {
+export class RentsService implements ICrudService<rent> {
   constructor(private prisma: PrismaService) {}
 
   async create(createRentDto: CreateRentDto, currentUser: ReqUser) {
@@ -93,7 +97,7 @@ export class RentsService {
       // Use transaction to ensure data consistency
       return await this.prisma.$transaction(async (tx) => {
         // Create rent record
-        const rent = await tx.rent.create({
+        await tx.rent.create({
           data: {
             user_id: createRentDto.user_id,
             stock_id: stock.id,
@@ -102,29 +106,6 @@ export class RentsService {
             returning_date: returningDate,
             custom_id: createRentDto.custom_id,
           },
-          include: {
-            user: {
-              select: {
-                first_name: true,
-                last_name: true,
-                phone: true,
-              },
-            },
-            stock: {
-              include: {
-                book: {
-                  select: {
-                    name: true,
-                    author: {
-                      select: {
-                        name: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
         });
 
         // Update stock status to busy
@@ -132,20 +113,6 @@ export class RentsService {
           where: { id: stock.id },
           data: { busy: true },
         });
-
-        // Create log entry
-        await tx.log.create({
-          data: {
-            path: '/rents',
-            method: 'POST',
-            resourse: 'rent',
-            resourse_id: rent.id,
-            user_id: currentUser.id,
-            data: rent,
-          },
-        });
-
-        return rent;
       });
     } catch (error) {
       throw new BadRequestException(
@@ -154,42 +121,43 @@ export class RentsService {
     }
   }
 
-  async findOne(dto: GetOneLiDto) {
+  async findOne(dto: FindOneLiDto) {
     return this.prisma.rent.findFirst({
       where: dto,
     });
   }
 
-  async update(dto: UpdateRentDto) {
+  async update(find_dto: FindOneLiDto, dto: UpdateRentDto) {
     await this.prisma.rent.update({
-      where: { id: dto.id, location_id: dto.location_id },
-      data: {},
+      where: find_dto,
+      data: dto,
     });
 
-    return this.findOne(dto);
+    return this.findOne(find_dto);
   }
 
-  // TODO
-  // shablonlashtirish kerak
-  // paginatsiyalarni bitta funksiyaga ajratib qo'yish kerak
-  async findAll(dto: GetListRentDto): Promise<ResponseItems<rent>> {
-    const [total, rents] = await Promise.all([
-      this.prisma.rent.count({ where: dto.filter }),
-      this.prisma.rent.findMany({
+  async remove(find_dto: FindOneLiDto) {
+    await this.prisma.rent.update({
+      where: find_dto,
+      data: {
+        deleted_at: new Date(),
+      },
+    });
+  }
+
+  async findAll(dto: FindAllRentDto) {
+    const pagination = await getPaginationResponse({
+      items: this.prisma.rent.findMany({
         where: dto.filter,
         include: {
           stock: true,
         },
-        orderBy: { [dto.order_by || 'updated_at']: dto.order },
-        skip: (dto.page - 1) * dto.limit,
-        take: dto.limit,
+        ...getPaginationOptions(dto),
       }),
-    ]);
+      count: this.prisma.rent.count({ where: dto.filter }),
+      dto,
+    });
 
-    return {
-      total,
-      items: rents,
-      page: dto.page,
-    };
+    return pagination;
   }
 }
