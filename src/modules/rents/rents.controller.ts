@@ -36,6 +36,7 @@ export class RentsController {
     return this.rentsService.findOne(dto).then(throwErrorIfNotFound);
   }
 
+  @RequirePermissions(Permissions.RENT_UPDATE)
   @Patch()
   update(@Body() dto: UpdateRentDto) {
     return this.rentsService.update(dto);
