@@ -1,9 +1,8 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-  Injectable,
+  Injectable
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ReqUser } from 'src/modules/auth/auth.interface';
@@ -29,15 +28,6 @@ export class PermissionGuard implements CanActivate {
     // If no user or role, deny access
     if (!user || !user.roleId || !user.permissions) {
       throw new ForbiddenException('No permission to access this resource');
-    }
-
-    const should_location = this.reflector.get<boolean[]>(
-      'loc',
-      context.getHandler(),
-    );
-
-    if (should_location && !user.locationId) {
-      throw new BadRequestException('User must be location');
     }
 
     if (user.locationId) {

@@ -10,10 +10,7 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import {
-  RequireLocation,
-  RequirePermissions,
-} from 'src/common/decorators/permissions.decorators';
+import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { ReqUser } from '../auth/auth.interface';
@@ -26,7 +23,6 @@ export class RentsController {
   constructor(private readonly rentsService: RentsService) {}
 
   @RequirePermissions(Permissions.RENT_CREATE)
-  @RequireLocation()
   @Post('/')
   create(@Body() dto: CreateRentDto, @CurrentUser() user: ReqUser) {
     return this.rentsService.create(dto, user);

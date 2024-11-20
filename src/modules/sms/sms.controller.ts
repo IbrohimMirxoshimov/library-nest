@@ -1,17 +1,15 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
-  Put,
+  Put
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
 import {
-  RequireLocation,
-  RequirePermissions,
+  RequirePermissions
 } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
@@ -24,7 +22,6 @@ export class SmsController {
   constructor(private readonly smsService: SmsService) {}
 
   @RequirePermissions(Permissions.SMS_CREATE)
-  @RequireLocation()
   @Post()
   create(@Body() dto: CreateSmsDto) {
     return this.smsService.create(dto);
@@ -37,14 +34,12 @@ export class SmsController {
   }
 
   @RequirePermissions(Permissions.SMS_READ)
-  @RequireLocation()
   @Get('/:id')
   findOne(@Param() dto: FindOneLiDto) {
     return this.smsService.findOne(dto).then(throwErrorIfNotFound);
   }
 
   @Put('/:id')
-  @RequireLocation()
   @RequirePermissions(Permissions.SMS_UPDATE)
   update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateSmsDto) {
     return this.smsService.update(find_dto, dto);
