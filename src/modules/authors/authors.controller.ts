@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthorsService } from './authors.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -19,32 +19,32 @@ export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
   @RequirePermissions(Permissions.AUTHOR_CREATE)
-  @Post()
+  @Post('/')
   create(@Body() dto: CreateAuthorDto, @CurrentUser() user: ReqUser) {
     return this.authorsService.create(dto, user);
   }
 
   @RequirePermissions(Permissions.AUTHOR_READ)
-  @Post('list')
+  @Post('/get-list')
   findAll(@Body() dto: GetListAuthorDto) {
     return this.authorsService.findAll(dto);
   }
 
   @RequirePermissions(Permissions.AUTHOR_READ)
-  @Post('item')
-  findOne(@Body() dto: FindOneDto) {
+  @Post('/:id')
+  findOne(@Param() dto: FindOneDto) {
     return this.authorsService.findOne(dto).then(throwErrorIfNotFound);
   }
 
   @RequirePermissions(Permissions.AUTHOR_UPDATE)
-  @Patch()
-  update(@Body() dto: UpdateAuthorDto) {
-    return this.authorsService.update(dto);
+  @Put('/:id')
+  update(@Param() find_dto: FindOneDto, @Body() dto: UpdateAuthorDto) {
+    return this.authorsService.update(find_dto, dto);
   }
 
   @RequirePermissions(Permissions.AUTHOR_DELETE)
-  @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.authorsService.remove(+id);
+  @Delete('/:id')
+  delete(@Param() find_dto: FindOneDto) {
+    return this.authorsService.remove(find_dto);
   }
 }

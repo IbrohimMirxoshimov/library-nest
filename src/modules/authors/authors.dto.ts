@@ -1,9 +1,8 @@
 import { ClassImplementation } from '../../utils/type.utils';
 import { Prisma } from '@prisma/client';
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEnum,
-  IsInt,
   IsNotEmptyObject,
   IsObject,
   IsOptional,
@@ -22,11 +21,7 @@ export class CreateAuthorDto
   name: string;
 }
 
-export class UpdateAuthorDto extends PartialType(CreateAuthorDto) {
-  @ApiProperty()
-  @IsInt()
-  id: number;
-}
+export class UpdateAuthorDto extends CreateAuthorDto {}
 
 class AuthorFilterDto implements ClassImplementation<Prisma.authorWhereInput> {
   @ApiPropertyOptional({
