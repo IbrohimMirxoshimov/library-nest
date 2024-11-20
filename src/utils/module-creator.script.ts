@@ -26,10 +26,7 @@ const controllerTemplate = (name: string) => `import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
-import {
-  RequireLocation,
-  RequirePermissions,
-} from 'src/common/decorators/permissions.decorators';
+import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { Create${capitalizeFirst(name)}Dto, FindAll${capitalizeFirst(name)}Dto, Update${capitalizeFirst(name)}Dto } from './${name}.dto';
@@ -41,8 +38,6 @@ export class ${capitalizeFirst(name)}Controller {
   constructor(private readonly ${name}Service: ${capitalizeFirst(name)}Service) {}
 
   @RequirePermissions(Permissions.${name.toUpperCase()}_CREATE)
-  !change it
-  @RequireLocation()
   @Post()
   create(@Body() dto: Create${capitalizeFirst(name)}Dto) {
     return this.${name}Service.create(dto);
@@ -61,16 +56,12 @@ export class ${capitalizeFirst(name)}Controller {
   }
 
   @Put('/:id')
-  !change it
-  @RequireLocation()
   @RequirePermissions(Permissions.${name.toUpperCase()}_UPDATE)
   update(@Param() find_dto: FindOneLiDto, @Body() dto: Update${capitalizeFirst(name)}Dto) {
     return this.${name}Service.update(find_dto, dto);
   }
 
   @Delete(':id')
-  !change it
-  @RequireLocation()
   remove(@Param() find_dto: FindOneLiDto) {
     return this.${name}Service.remove(find_dto);
   }

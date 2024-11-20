@@ -1,18 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
-import {
-  RequireLocation,
-  RequirePermissions,
-} from 'src/common/decorators/permissions.decorators';
+import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { CreateStockDto, FindAllStockDto, UpdateStockDto } from './stock.dto';
@@ -24,7 +13,6 @@ export class StockController {
   constructor(private readonly stockService: StockService) {}
 
   @RequirePermissions(Permissions.STOCK_CREATE)
-  @RequireLocation()
   @Post()
   create(@Body() dto: CreateStockDto) {
     return this.stockService.create(dto);
@@ -43,7 +31,6 @@ export class StockController {
   }
 
   @Put('/:id')
-  @RequireLocation()
   @RequirePermissions(Permissions.STOCK_UPDATE)
   update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateStockDto) {
     return this.stockService.update(find_dto, dto);
