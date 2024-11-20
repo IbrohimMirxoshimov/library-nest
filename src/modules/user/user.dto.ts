@@ -5,7 +5,6 @@ import {
   IsInt,
   IsISO8601,
   IsNotEmpty,
-  IsNotEmptyObject,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -15,7 +14,7 @@ import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
-import { Transform } from 'class-transformer';
+import { SearchableField } from '../../common/class-validators/SearchableField';
 
 export class CreateUserDto
   implements ClassImplementation<Prisma.userCreateInput>
@@ -79,41 +78,11 @@ export class CreateUserDto
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
 
 class UserFilterDto implements ClassImplementation<Prisma.userWhereInput> {
-  @ApiPropertyOptional({
-    title: 'First name of the user',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'first_name must be a string' })
+  @SearchableField()
   @IsOptional()
   first_name?: string;
 
-  @ApiPropertyOptional({
-    title: 'Last name of the user',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'last_name must be a string' })
+  @SearchableField()
   @IsOptional()
   last_name?: string;
 

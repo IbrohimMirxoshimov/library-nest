@@ -4,7 +4,6 @@ import {
   IsEnum,
   IsISO8601,
   IsNotEmpty,
-  IsNotEmptyObject,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -14,8 +13,8 @@ import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
-import { Transform } from 'class-transformer';
 import { LocationIdDto } from '../../common/dto/common.dto';
+import { SearchableField } from '../../common/class-validators/SearchableField';
 
 export class CreateCustomerDto
   extends LocationIdDto
@@ -73,98 +72,23 @@ class CustomerFilterDto
   extends LocationIdDto
   implements ClassImplementation<Prisma.userWhereInput>
 {
-  @ApiPropertyOptional({
-    title: 'First name of the customer',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'first_name must be a string' })
+  @SearchableField()
   @IsOptional()
   first_name?: string;
 
-  @ApiPropertyOptional({
-    title: 'Last name of the customer',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'last_name must be a string' })
+  @SearchableField()
   @IsOptional()
   last_name?: string;
 
-  @ApiPropertyOptional({
-    title: 'Passport ID of the customer',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'passport_id must be a string' })
+  @SearchableField()
   @IsOptional()
   passport_id?: string;
 
-  @ApiPropertyOptional({
-    title: 'Passport PIN of the customer',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'passport_pin must be a string' })
+  @SearchableField()
   @IsOptional()
   passport_pin?: string;
 
-  @ApiPropertyOptional({
-    title: 'Phone number of the customer',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'phone must be a string' })
+  @SearchableField()
   @IsOptional()
   phone?: string;
 

@@ -51,7 +51,7 @@ export class UserService implements ICrudService<user> {
 
   async findOne(dto: FindOneDto) {
     const user = await this.prisma.user.findFirst({
-      where: dto,
+      where: { ...dto, NOT: { role: null } },
       include: { role: true },
     });
     if (!user) {
@@ -63,7 +63,7 @@ export class UserService implements ICrudService<user> {
 
   async update(find_dto: FindOneDto, dto: UpdateUserDto) {
     await this.prisma.user.update({
-      where: find_dto,
+      where: { ...find_dto, NOT: { role: null } },
       data: dto,
     });
 
@@ -72,7 +72,7 @@ export class UserService implements ICrudService<user> {
 
   async remove(find_dto: FindOneDto) {
     await this.prisma.user.update({
-      where: find_dto,
+      where: { ...find_dto, NOT: { role: null } },
       data: {
         deleted_at: new Date(),
       },
@@ -80,12 +80,16 @@ export class UserService implements ICrudService<user> {
   }
 
   async findAll(dto: FindAllUserDto) {
+    const where = {
+      ...dto.filter,
+      NOT: { role: null },
+    };
     return await getPaginationResponse({
       items: this.prisma.user.findMany({
-        where: dto.filter,
+        where,
         ...getPaginationOptions(dto),
       }),
-      count: this.prisma.user.count({ where: dto.filter }),
+      count: this.prisma.user.count({ where }),
       dto,
     });
   }
