@@ -9,13 +9,14 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
-import {
-  RequireLocation,
-  RequirePermissions,
-} from 'src/common/decorators/permissions.decorators';
+import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { CreateCustomerDto, FindAllCustomerDto, UpdateCustomerDto } from './customer.dto';
+import {
+  CreateCustomerDto,
+  FindAllCustomerDto,
+  UpdateCustomerDto,
+} from './customer.dto';
 import { CustomerService } from './customer.service';
 
 @ApiBearerAuth()
@@ -24,14 +25,14 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @RequirePermissions(Permissions.CUSTOMER_CREATE)
-  @RequireLocation()
-  @Post()
+  @Post('/')
   create(@Body() dto: CreateCustomerDto) {
+    // handle location_id errors
     return this.customerService.create(dto);
   }
 
   @RequirePermissions(Permissions.CUSTOMER_READ)
-  @Post('get-list')
+  @Post('/get-list')
   findAll(@Body() dto: FindAllCustomerDto) {
     return this.customerService.findAll(dto);
   }
@@ -42,15 +43,14 @@ export class CustomerController {
     return this.customerService.findOne(dto).then(throwErrorIfNotFound);
   }
 
-  @Put('/:id')
-  @RequireLocation()
   @RequirePermissions(Permissions.CUSTOMER_UPDATE)
+  @Put('/:id')
   update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateCustomerDto) {
     return this.customerService.update(find_dto, dto);
   }
 
-  @Delete(':id')
-  @RequireLocation()
+  @RequirePermissions(Permissions.CUSTOMER_DELETE)
+  @Delete('/:id')
   remove(@Param() find_dto: FindOneLiDto) {
     return this.customerService.remove(find_dto);
   }
