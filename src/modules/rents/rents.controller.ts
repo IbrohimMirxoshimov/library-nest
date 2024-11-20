@@ -27,13 +27,13 @@ export class RentsController {
 
   @RequirePermissions(Permissions.RENT_CREATE)
   @RequireLocation()
-  @Post()
+  @Post('/')
   create(@Body() dto: CreateRentDto, @CurrentUser() user: ReqUser) {
     return this.rentsService.create(dto, user);
   }
 
   @RequirePermissions(Permissions.RENT_READ)
-  @Post('get-list')
+  @Post('/get-list')
   findAll(@Body() dto: FindAllRentDto) {
     return this.rentsService.findAll(dto);
   }
@@ -44,14 +44,15 @@ export class RentsController {
     return this.rentsService.findOne(dto).then(throwErrorIfNotFound);
   }
 
-  @Put('/:id')
   @RequirePermissions(Permissions.RENT_UPDATE)
+  @Put('/:id')
   update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateRentDto) {
     console.log(find_dto);
 
     return this.rentsService.update(find_dto, dto);
   }
 
+  @RequirePermissions(Permissions.RENT_DELETE)
   @Delete('/:id')
   remove(@Param() find_dto: FindOneLiDto) {
     return this.rentsService.remove(find_dto);
