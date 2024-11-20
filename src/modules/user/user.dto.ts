@@ -1,23 +1,23 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import {
-	IsEnum,
-	IsInt,
-	IsISO8601,
-	IsNotEmpty,
-	IsOptional,
-	IsString
+  IsEnum,
+  IsInt,
+  IsISO8601,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsOptional,
+  IsString,
 } from 'class-validator';
 import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
 import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
-import { LocationIdDto } from 'src/common/dto/common.dto';
 import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto
-  extends LocationIdDto
   implements ClassImplementation<Prisma.userCreateInput>
 {
   @ApiProperty()
@@ -68,23 +68,53 @@ export class CreateUserDto
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  passport_pin?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   passport_image?: string;
 }
 
-export class UpdateUserDto extends CreateUserDto {}
+export class UpdateUserDto extends PartialType(CreateUserDto) {}
 
-class UserFilterDto
-  extends LocationIdDto
-  implements ClassImplementation<Prisma.userWhereInput>
-{
-  @ApiPropertyOptional()
+class UserFilterDto implements ClassImplementation<Prisma.userWhereInput> {
+  @ApiPropertyOptional({
+    title: 'First name of the user',
+    description:
+      'Search will be performed, records are selected if they contain given input',
+    type: String,
+  })
+  @Transform(({ value }) => {
+    // validate initial input type manually
+    if (!value || typeof value !== 'string') return {};
+    return {
+      contains: value,
+      mode: 'insensitive',
+    };
+  })
+  // empty object is received after transformation if initial type was invalid
+  @IsNotEmptyObject({}, { message: 'first_name must be a string' })
   @IsOptional()
-  @IsString()
   first_name?: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    title: 'Last name of the user',
+    description:
+      'Search will be performed, records are selected if they contain given input',
+    type: String,
+  })
+  @Transform(({ value }) => {
+    // validate initial input type manually
+    if (!value || typeof value !== 'string') return {};
+    return {
+      contains: value,
+      mode: 'insensitive',
+    };
+  })
+  // empty object is received after transformation if initial type was invalid
+  @IsNotEmptyObject({}, { message: 'last_name must be a string' })
   @IsOptional()
-  @IsString()
   last_name?: string;
 
   @ApiPrismaIntFilter()
