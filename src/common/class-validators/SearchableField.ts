@@ -1,7 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNotEmptyObject, ValidationOptions } from 'class-validator';
+import {
+  IsNotEmptyObject,
+  IsOptional,
+  ValidationOptions,
+} from 'class-validator';
 
 export const SearchableField =
   (validationOptions?: ValidationOptions) =>
@@ -29,4 +33,5 @@ export const SearchableField =
             `${String(propertyKey)} must be a string`,
         },
       ),
+      IsOptional(),
     )(target, propertyKey);

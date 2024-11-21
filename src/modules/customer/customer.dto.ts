@@ -64,6 +64,21 @@ export class CreateCustomerDto
   @IsOptional()
   @IsString()
   passport_image?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  extra?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  extra_phone?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  extra_phone_second?: string;
 }
 
 export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}
@@ -73,23 +88,18 @@ class CustomerFilterDto
   implements ClassImplementation<Prisma.userWhereInput>
 {
   @SearchableField()
-  @IsOptional()
   first_name?: string;
 
   @SearchableField()
-  @IsOptional()
   last_name?: string;
 
   @SearchableField()
-  @IsOptional()
   passport_id?: string;
 
   @SearchableField()
-  @IsOptional()
   passport_pin?: string;
 
   @SearchableField()
-  @IsOptional()
   phone?: string;
 
   @ApiPrismaIntFilter()

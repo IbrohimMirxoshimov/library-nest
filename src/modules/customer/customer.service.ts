@@ -21,48 +21,53 @@ export class CustomerService implements ICrudService<user> {
     // Check if the phone number is already registered in system
     // may need to add role: null filter to allow users and customers with the same phone number
     // TODO: add address relation
-    // const location_id = createCustomerDto.location_id;
-    delete createCustomerDto.location_id;
     const existingCustomersCount = await this.prisma.user.count({
-      where: { phone: createCustomerDto.phone },
+      where: { passport_id: createCustomerDto.passport_id, role: null },
     });
     if (existingCustomersCount !== 0) {
       throw new BadRequestException('Phone number already registered');
     }
+    const registered_locations = [];
+    if (createCustomerDto.location_id) {
+      registered_locations.push(createCustomerDto.location_id);
+    }
+    delete createCustomerDto.location_id;
     return await this.prisma.user.create({
-      data: createCustomerDto,
+      data: { ...createCustomerDto, registered_locations },
     });
   }
 
   async findOne(dto: FindOneLiDto) {
-    // const location_id = dto.location_id;
+    const location_id = dto.location_id;
+    if (!location_id) {
+      throw new BadRequestException('Access denied due to invalid location');
+    }
     delete dto.location_id;
     return this.prisma.user.findFirst({
       where: {
         ...dto,
         role_id: null,
-        // address: {
-        //   location: {
-        //     some: { id: location_id },
-        //   },
-        // },
+        registered_locations: {
+          has: location_id,
+        },
       },
     });
   }
 
   async update(find_dto: FindOneLiDto, dto: UpdateCustomerDto) {
-    // const location_id = find_dto.location_id;
+    const location_id = find_dto.location_id;
+    if (!location_id) {
+      throw new BadRequestException('Access denied due to invalid location');
+    }
     delete find_dto.location_id;
     delete dto.location_id;
     await this.prisma.user.update({
       where: {
         ...find_dto,
         role_id: null,
-        // address: {
-        //   location: {
-        //     some: { id: location_id },
-        //   },
-        // },
+        registered_locations: {
+          has: location_id,
+        },
       },
       data: dto,
     });
@@ -71,17 +76,18 @@ export class CustomerService implements ICrudService<user> {
   }
 
   async remove(find_dto: FindOneLiDto) {
-    // const location_id = find_dto.location_id;
+    const location_id = find_dto.location_id;
+    if (!location_id) {
+      throw new BadRequestException('Access denied due to invalid location');
+    }
     delete find_dto.location_id;
     await this.prisma.user.update({
       where: {
         ...find_dto,
         role_id: null,
-        // address: {
-        //   location: {
-        //     some: { id: location_id },
-        //   },
-        // },
+        registered_locations: {
+          has: location_id,
+        },
       },
       data: {
         deleted_at: new Date(),
@@ -90,16 +96,17 @@ export class CustomerService implements ICrudService<user> {
   }
 
   async findAll(dto: FindAllCustomerDto) {
-    // const location_id = dto.filter?.location_id;
+    const location_id = dto.filter?.location_id;
+    if (!location_id) {
+      throw new BadRequestException('Access denied due to invalid location');
+    }
     delete dto.filter?.location_id;
     const where = {
       ...dto.filter,
       role_id: null,
-      // address: {
-      //   location: {
-      //     some: { id: location_id },
-      //   },
-      // },
+      registered_locations: {
+        has: location_id,
+      },
     };
     const pagination = await getPaginationResponse({
       items: this.prisma.user.findMany({

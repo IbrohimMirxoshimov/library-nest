@@ -3,7 +3,6 @@ import { Prisma } from '@prisma/client';
 import {
   IsEnum,
   IsInt,
-  IsISO8601,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -29,62 +28,35 @@ export class CreateUserDto
   @IsString()
   last_name?: string;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty()
   @IsString()
-  phone?: string;
+  phone: string;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty()
   @IsString()
-  password?: string;
+  password: string;
+
+  @ApiProperty()
+  @IsInt()
+  role_id: number;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   gender?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsISO8601()
-  birth_date?: Date;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt()
-  role_id?: number;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  telegram_id?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  passport_id?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  passport_pin?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  passport_image?: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
 
 class UserFilterDto implements ClassImplementation<Prisma.userWhereInput> {
   @SearchableField()
-  @IsOptional()
   first_name?: string;
 
   @SearchableField()
-  @IsOptional()
   last_name?: string;
+
+  @SearchableField()
+  phone: string;
 
   @ApiPrismaIntFilter()
   @IsOptional()
