@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserStatus } from '@prisma/client';
 import {
   IsEnum,
   IsISO8601,
@@ -74,10 +74,10 @@ export class CreateCustomerDto
   // address?: Prisma.addressCreateNestedOneWithoutUserInput | undefined;
   // balance?: number | null | undefined;
 
-  // enum qilish kerak
-  // ACTIVE=1
-  // BLOCKED=2
-  // status?: number | null | undefined;
+  @ApiEnum(UserStatus)
+  @IsEnum(UserStatus)
+  @IsOptional()
+  status?: UserStatus;
 
   // shunaqa column qo'shish kerak: boolean
   // verified;
