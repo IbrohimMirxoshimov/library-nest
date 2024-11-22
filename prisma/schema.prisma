@@ -27,6 +27,11 @@ model role {
   users       user[]
 }
 
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
 model user {
   id                   Int        @id @default(autoincrement())
   first_name           String
@@ -46,7 +51,7 @@ model user {
   extra_phone          String?
   extra_phone_second   String?
   passport_pin         String?    @unique()
-  status               Int?       @default(1)
+  status               UserStatus @default(ACTIVE)
   balance              Int?       @default(0)
   blocking_reason      String?
   registered_locations Int[]      @default([])
@@ -57,7 +62,8 @@ model user {
   role_id              Int?
   role                 role?      @relation(fields: [role_id], references: [id])
   // 
-  rents                rent[]
+  rents_customer       rent[]     @relation("customer_rents")
+  rents_librarian      rent[]     @relation("librarian_rents")
   sms                  sms[]
   sms_bulks            sms_bulk[]
 }
@@ -121,8 +127,11 @@ model rent {
   rejected       Boolean   @default(false)
   returned_at    DateTime?
   // 
-  user_id        Int
-  user           user      @relation(fields: [user_id], references: [id])
+  customer_id    Int
+  customer       user      @relation("customer_rents", fields: [customer_id], references: [id])
+  // 
+  librarian_id   Int
+  librarian      user      @relation("librarian_rents", fields: [librarian_id], references: [id])
   //
   stock_id       Int
   stock          stock     @relation(fields: [stock_id], references: [id])
@@ -243,7 +252,7 @@ model book {
   searchable_name String
   description     String?
   image           String?
-  rent_duration   Int?        @default(15)
+  rent_duration   Int?
   printed_at      DateTime?
   pages           Int?
   sort            Int?        @default(0)

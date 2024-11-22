@@ -22,7 +22,9 @@ export const Permissions = {
   RENT_CREATE: 31,
   RENT_READ: 32,
   RENT_UPDATE: 33,
-  RENT_DELETE: 34,
+  RENT_CANCEL: 34,
+  RENT_REJECT: 35,
+  RENT_RETURN: 35,
 
   // Author permissions
   AUTHOR_CREATE: 41,

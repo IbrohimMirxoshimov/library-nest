@@ -30,8 +30,9 @@ export class CreateRentDto
   @IsISO8601()
   returning_date: string;
 
-  @ApiPropertyOptional()
-  leased_at?: string;
+  @ApiProperty({ example: new Date().toISOString() })
+  @IsISO8601()
+  leased_at: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -39,7 +40,25 @@ export class CreateRentDto
   custom_id?: number;
 }
 
-export class UpdateRentDto extends CreateRentDto {}
+export class UpdateRentDto
+  extends LocationIdDto
+  implements ClassImplementation<Prisma.rentUpdateInput>
+{
+  @ApiPropertyOptional({ example: new Date().toISOString() })
+  @IsISO8601()
+  @IsOptional()
+  returning_date?: string;
+
+  @ApiPropertyOptional({ example: new Date().toISOString() })
+  @IsISO8601()
+  @IsOptional()
+  leased_at?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  custom_id?: number;
+}
 
 class RentFilterDto
   extends LocationIdDto
