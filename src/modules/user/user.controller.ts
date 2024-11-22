@@ -20,7 +20,11 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @RequirePermissions(Permissions.USER_CREATE)
+  @RequirePermissions(
+    Permissions.USER_CREATE,
+    Permissions.ROLE_CREATE,
+    Permissions.ROLE_UPDATE,
+  )
   @Post('/')
   create(@Body() dto: CreateUserDto) {
     return this.userService.create(dto);
@@ -38,7 +42,11 @@ export class UserController {
     return this.userService.findOne(dto).then(throwErrorIfNotFound);
   }
 
-  @RequirePermissions(Permissions.USER_UPDATE)
+  @RequirePermissions(
+    Permissions.USER_UPDATE,
+    Permissions.ROLE_CREATE,
+    Permissions.ROLE_UPDATE,
+  )
   @Put('/:id')
   update(@Param() find_dto: FindOneDto, @Body() dto: UpdateUserDto) {
     return this.userService.update(find_dto, dto);

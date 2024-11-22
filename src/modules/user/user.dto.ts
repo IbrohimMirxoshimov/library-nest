@@ -61,7 +61,7 @@ class UserFilterDto implements ClassImplementation<Prisma.userWhereInput> {
   @ApiPrismaIntFilter()
   @IsOptional()
   @IsPrismaIntFilter()
-  id?: number | Prisma.IntFilter<'user'> | undefined;
+  id?: number | Prisma.IntFilter<'user'>;
 }
 
 export class FindAllUserDto extends FindAllDto {
