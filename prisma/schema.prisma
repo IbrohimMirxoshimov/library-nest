@@ -46,7 +46,7 @@ model user {
   passport_id          String?    @unique()
   passport_image       String?
   created_at           DateTime   @default(now())
-  updated_at           DateTime   @default(now())
+  updated_at           DateTime   @default(now()) @updatedAt
   deleted_at           DateTime?
   extra_phone          String?
   extra_phone_second   String?
@@ -76,7 +76,7 @@ model address {
   latitude     Float?
   longitude    Float?
   created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now()) @updatedAt
   country_code String     @default("uz")
   street       String?
   home         String?
@@ -90,7 +90,7 @@ model location {
   name        String
   description String?
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime?
   active      Boolean   @default(true)
   link        String?
@@ -110,7 +110,7 @@ model region {
   id         Int        @id @default(autoincrement())
   name       String
   created_at DateTime   @default(now())
-  updated_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
   deleted_at DateTime?
   // 
   locations  location[]
@@ -121,7 +121,7 @@ model rent {
   rented_at   DateTime
   due_date    DateTime
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime?
   custom_id   Int?
   rejected    Boolean   @default(false)
@@ -148,7 +148,7 @@ model stock {
   id          Int       @id @default(autoincrement())
   busy        Boolean   @default(false)
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime?
   description String?
   status      Int?
@@ -170,7 +170,7 @@ model comment {
   id         Int      @id @default(autoincrement())
   text       String
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   user_id    Int
   rent_id    Int?
   book_id    Int?
@@ -209,7 +209,7 @@ model sms_bulk {
   id         Int       @id @default(autoincrement())
   text       String
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   user_id    Int?
   // 
@@ -222,7 +222,7 @@ model publishing {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
 }
 
@@ -231,7 +231,7 @@ model collection {
   name       String
   sort       Int?      @default(0)
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   // 
   books      book[]
@@ -241,7 +241,7 @@ model author {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   creator_id Int?
   // 
@@ -259,7 +259,7 @@ model book {
   pages           Int?
   sort            Int?        @default(0)
   created_at      DateTime    @default(now())
-  updated_at      DateTime    @default(now())
+  updated_at      DateTime    @default(now()) @updatedAt
   deleted_at      DateTime?
   author_id       Int?
   books_group_id  Int?
