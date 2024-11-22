@@ -111,6 +111,8 @@ class CustomerFilterDto
   @SearchableField()
   first_name?: string;
 
+  // TODO
+  // SearchableField ishlatmaslik kerak
   @SearchableField()
   last_name?: string;
 

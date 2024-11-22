@@ -11,7 +11,8 @@ import {
   FindAllCustomerDto,
   UpdateCustomerDto,
 } from './customer.dto';
-import { user } from '@prisma/client';
+import { Prisma, user } from '@prisma/client';
+import { ilike } from 'src/prisma/prisma.utils';
 
 @Injectable()
 export class CustomerService implements ICrudService<user> {
@@ -97,17 +98,21 @@ export class CustomerService implements ICrudService<user> {
 
   async findAll(dto: FindAllCustomerDto) {
     const location_id = dto.filter?.location_id;
+
     if (!location_id) {
       throw new BadRequestException('Access denied due to invalid location');
     }
-    delete dto.filter?.location_id;
-    const where = {
-      ...dto.filter,
+
+    const where: Prisma.userWhereInput = {
+      first_name: ilike(dto.filter?.first_name),
+      last_name: ilike(dto.filter?.last_name),
+      phone: ilike(dto.filter?.phone),
       role_id: null,
       registered_locations: {
         has: location_id,
       },
     };
+
     const pagination = await getPaginationResponse({
       items: this.prisma.user.findMany({
         where,
