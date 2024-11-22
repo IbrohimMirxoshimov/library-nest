@@ -144,24 +144,36 @@ model rent {
   comment comment[]
 }
 
+enum StockSource {
+  PURCHASED
+  GIFT
+}
+
+enum StockStatus {
+  ACTIVE
+  RESTRICTED
+  NEEDS_REPAIR
+  LOST
+  INACTIVE
+}
+
 model stock {
-  id          Int       @id @default(autoincrement())
-  busy        Boolean   @default(false)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now()) @updatedAt
+  id          Int          @id @default(autoincrement())
+  busy        Boolean      @default(false)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @default(now()) @updatedAt
   deleted_at  DateTime?
   description String?
-  status      Int?
-  price       Int?      @default(50000)
+  status      StockStatus  @default(ACTIVE)
+  price       Int?
   // qaysi yo'l bilan kutubxanaga kelgan
-  // enum yangi | hadya
-  source      Int
+  source      StockSource?
   // 
   location_id Int
-  location    location  @relation(fields: [location_id], references: [id])
+  location    location     @relation(fields: [location_id], references: [id])
   //
   book_id     Int
-  book        book      @relation(fields: [book_id], references: [id])
+  book        book         @relation(fields: [book_id], references: [id])
   // 
   rents       rent[]
 }

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { Prisma, StockSource, StockStatus } from '@prisma/client';
 import {
   IsBoolean,
   IsEnum,
@@ -33,17 +33,43 @@ export class CreateStockDto
   @IsInt()
   price?: number;
 
-  @ApiProperty()
-  @IsInt()
-  source: number;
+  @ApiEnum(StockSource)
+  @IsOptional()
+  @IsEnum(StockSource)
+  source?: StockSource;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsBoolean()
   busy?: boolean;
+
+  @ApiEnum(StockStatus)
+  @IsOptional()
+  @IsEnum(StockStatus)
+  status?: StockStatus;
 }
 
-export class UpdateStockDto extends CreateStockDto {}
+export class UpdateStockDto
+  extends LocationIdDto
+  implements ClassImplementation<Prisma.stockUpdateInput>
+{
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsEnum(StockStatus)
+  status?: StockStatus;
+
+  @IsOptional()
+  @IsInt()
+  price?: number;
+
+  @ApiEnum(StockSource)
+  @IsOptional()
+  @IsEnum(StockSource)
+  source?: StockSource;
+}
 
 class StockFilterDto
   extends LocationIdDto

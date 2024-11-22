@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
 import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
+import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { CreateStockDto, FindAllStockDto, UpdateStockDto } from './stock.dto';
 import { StockService } from './stock.service';
@@ -32,7 +32,7 @@ export class StockController {
 
   @Put('/:id')
   @RequirePermissions(Permissions.STOCK_UPDATE)
-  update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateStockDto) {
+  update(@Param() find_dto: FindOneWithLiDto, @Body() dto: UpdateStockDto) {
     return this.stockService.update(find_dto, dto);
   }
 }
