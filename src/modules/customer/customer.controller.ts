@@ -10,7 +10,7 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
 import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
+import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import {
   CreateCustomerDto,
@@ -39,19 +39,19 @@ export class CustomerController {
 
   @RequirePermissions(Permissions.CUSTOMER_READ)
   @Get('/:id')
-  findOne(@Param() dto: FindOneLiDto) {
+  findOne(@Param() dto: FindOneWithLiDto) {
     return this.customerService.findOne(dto).then(throwErrorIfNotFound);
   }
 
   @RequirePermissions(Permissions.CUSTOMER_UPDATE)
   @Put('/:id')
-  update(@Param() find_dto: FindOneLiDto, @Body() dto: UpdateCustomerDto) {
+  update(@Param() find_dto: FindOneWithLiDto, @Body() dto: UpdateCustomerDto) {
     return this.customerService.update(find_dto, dto);
   }
 
   @RequirePermissions(Permissions.CUSTOMER_DELETE)
   @Delete('/:id')
-  remove(@Param() find_dto: FindOneLiDto) {
+  remove(@Param() find_dto: FindOneWithLiDto) {
     return this.customerService.remove(find_dto);
   }
 }
