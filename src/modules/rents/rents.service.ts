@@ -117,7 +117,7 @@ export class RentService {
 
   async create(dto: CreateRentDto, user: ReqUser) {
     // Validate returning date
-    if (dto.returning_date < dto.leased_at) {
+    if (dto.due_date < dto.rented_at) {
       throw new BadRequestException('Invalid dates');
     }
 
@@ -153,8 +153,8 @@ export class RentService {
     // Validate rent duration
     if (stock.location_id === 1) {
       const rentDurationDays = getDateDifferenceInDays(
-        new Date(dto.returning_date),
-        new Date(dto.leased_at),
+        new Date(dto.due_date),
+        new Date(dto.rented_at),
       );
 
       const rent_duration =
@@ -179,8 +179,8 @@ export class RentService {
           customer_id: dto.customer_id,
           librarian_id: user.id,
           location_id: dto.location_id,
-          leased_at: dto.leased_at,
-          returning_date: dto.returning_date,
+          rented_at: dto.rented_at,
+          due_date: dto.due_date,
           stock_id: dto.stock_id,
         },
       });
@@ -210,9 +210,9 @@ export class RentService {
 
     // Check blocking conditions
     if (
-      getDateDifferenceInDays(now, new Date(rent.returning_date)) >
+      getDateDifferenceInDays(now, new Date(rent.due_date)) >
         this.BLOCKING_LATE_TIME_FROM_LEASED_IN_DAYS ||
-      getDateDifferenceInDays(now, new Date(rent.returning_date)) >
+      getDateDifferenceInDays(now, new Date(rent.due_date)) >
         this.BLOCKING_LATE_TIME_FROM_RETURNING_IN_DAYS
     ) {
       isUserBlocked = true;
@@ -364,10 +364,10 @@ export class RentService {
       });
 
       // Optional: Create a comment for returning date change
-      if (dto.returning_date && dto.leased_at) {
+      if (dto.due_date && dto.rented_at) {
         await tx.comment.create({
           data: {
-            text: `Returning date changed from ${rent.returning_date.toLocaleDateString()} to ${dto.returning_date}`,
+            text: `Returning date changed from ${rent.due_date.toLocaleDateString()} to ${dto.due_date}`,
             rent_id: find_dto.id,
             user_id: user.id,
           },

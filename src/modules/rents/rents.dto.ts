@@ -28,11 +28,11 @@ export class CreateRentDto
 
   @ApiProperty({ example: new Date().toISOString() })
   @IsISO8601()
-  returning_date: string;
+  due_date: string;
 
   @ApiProperty({ example: new Date().toISOString() })
   @IsISO8601()
-  leased_at: string;
+  rented_at: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -47,12 +47,12 @@ export class UpdateRentDto
   @ApiPropertyOptional({ example: new Date().toISOString() })
   @IsISO8601()
   @IsOptional()
-  returning_date?: string;
+  due_date?: string;
 
   @ApiPropertyOptional({ example: new Date().toISOString() })
   @IsISO8601()
   @IsOptional()
-  leased_at?: string;
+  rented_at?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

@@ -117,29 +117,31 @@ model region {
 }
 
 model rent {
-  id             Int       @id @default(autoincrement())
-  leased_at      DateTime
-  returning_date DateTime
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @default(now())
-  deleted_at     DateTime?
-  custom_id      Int?
-  rejected       Boolean   @default(false)
-  returned_at    DateTime?
+  id          Int       @id @default(autoincrement())
+  rented_at   DateTime
+  due_date    DateTime
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?
+  custom_id   Int?
+  rejected    Boolean   @default(false)
+  returned_at DateTime?
+
+  // Relationships
+  customer_id  Int
+  customer     user     @relation("customer_rents", fields: [customer_id], references: [id])
   // 
-  customer_id    Int
-  customer       user      @relation("customer_rents", fields: [customer_id], references: [id])
-  // 
-  librarian_id   Int
-  librarian      user      @relation("librarian_rents", fields: [librarian_id], references: [id])
+  librarian_id Int
+  librarian    user     @relation("librarian_rents", fields: [librarian_id], references: [id])
   //
-  stock_id       Int
-  stock          stock     @relation(fields: [stock_id], references: [id])
+  stock_id     Int
+  stock        stock    @relation(fields: [stock_id], references: [id])
   // 
-  location_id    Int
-  location       location  @relation(fields: [location_id], references: [id])
-  // 
-  comment        comment[]
+  location_id  Int
+  location     location @relation(fields: [location_id], references: [id])
+
+  // Related
+  comment comment[]
 }
 
 model stock {
