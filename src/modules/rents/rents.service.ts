@@ -139,7 +139,7 @@ export class RentService {
 
     // Validate user can rent
     await this.validateUserRent(
-      dto.user_id,
+      dto.customer_id,
       dto.location_id,
       // todo
       // book ga qo'yish kerak price ni
@@ -148,7 +148,7 @@ export class RentService {
     );
 
     // Check rent strategy
-    await this.canGetMoreRentStrategy(stock, dto.user_id);
+    await this.canGetMoreRentStrategy(stock, dto.customer_id);
 
     // Validate rent duration
     if (stock.location_id === 1) {
@@ -176,7 +176,7 @@ export class RentService {
 
       return tx.rent.create({
         data: {
-          customer_id: dto.user_id,
+          customer_id: dto.customer_id,
           librarian_id: user.id,
           location_id: dto.location_id,
           leased_at: dto.leased_at,

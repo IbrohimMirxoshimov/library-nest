@@ -20,7 +20,7 @@ export class CreateRentDto
 {
   @ApiProperty()
   @IsInt()
-  user_id: number;
+  customer_id: number;
 
   @ApiProperty()
   @IsInt()
