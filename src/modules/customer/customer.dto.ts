@@ -15,6 +15,7 @@ import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
 import { LocationIdDto } from '../../common/dto/common.dto';
 import { SearchableField } from '../../common/class-validators/SearchableField';
+import { IsUzbPhoneNumber } from 'src/common/class-validators/IsUzbPhoneNumber';
 
 export class CreateCustomerDto
   extends LocationIdDto
@@ -30,10 +31,9 @@ export class CreateCustomerDto
   @IsString()
   last_name?: string;
 
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  phone?: string;
+  @ApiProperty()
+  @IsUzbPhoneNumber()
+  phone: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -68,6 +68,23 @@ export class CreateCustomerDto
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  blocking_reason?: string;
+
+  // TODO
+  // address?: Prisma.addressCreateNestedOneWithoutUserInput | undefined;
+  // balance?: number | null | undefined;
+
+  // enum qilish kerak
+  // ACTIVE=1
+  // BLOCKED=2
+  // status?: number | null | undefined;
+
+  // shunaqa column qo'shish kerak: boolean
+  // verified;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   extra?: string;
 
   @ApiPropertyOptional()
@@ -87,6 +104,10 @@ class CustomerFilterDto
   extends LocationIdDto
   implements ClassImplementation<Prisma.userWhereInput>
 {
+  // TODO
+  // q: nomli qidirish imkoniyati qo'shish kerak
+  // shu qatorda eski versiyada qanday tashkil qilish ko'rsatilga. Birnechta columnlar concat qilinib ilike bilan qidiriladi
+  // https://github.com/IbrohimMirxoshimov/library-app-backend/blob/3ef474de9b9c5d0c6cd9ec50f286e3ed0dfd3594/app/controllers/user.js#L111
   @SearchableField()
   first_name?: string;
 
