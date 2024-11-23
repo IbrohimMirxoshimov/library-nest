@@ -1,3 +1,23 @@
+## Run the project
+1. Install requiements with the following command
+```bash
+   pnpm install
+```
+
+2. Config correction
+ - Moving all configs from example.env to .env doesn't work unless you need to
+ - postresql server must be running
+
+3. Prisma generation
+```bash
+   pnpm run migration:up
+```
+
+4. Run the project in dev mode
+```bash
+   pnpm run dev
+```
+
 ## Key requirements:
 
 1. Multi-library support:
