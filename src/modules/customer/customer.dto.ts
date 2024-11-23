@@ -93,10 +93,11 @@ export class CreateCustomerDto
   @IsString()
   blocking_reason?: string;
 
-  // TODO
-  // balance?: number | null;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  balance?: number | null;
 
-  // address?: Prisma.addressCreateNestedOneWithoutUserInput;
   @ApplyNestedOptional(CustomerAddressDto)
   address?: Prisma.addressUncheckedCreateWithoutUserInput;
 
