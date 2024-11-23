@@ -33,7 +33,10 @@ export class CustomerService implements ICrudService<user> {
 
     return await this.prisma.user.create({
       data: {
-        ...omitProperty(dto, 'location_id'),
+        ...omitProperty(omitProperty(dto, 'location_id'), 'address'),
+        address: {
+          create: dto.address,
+        },
         registered_locations: [dto.location_id],
       },
     });
@@ -60,7 +63,14 @@ export class CustomerService implements ICrudService<user> {
           has: find_dto.location_id,
         },
       },
-      data: dto,
+      data: {
+        ...omitProperty(dto, 'address'),
+        // TODO
+        // address yengi yasab qo'ymayaptimi id biln kelsa tekshirib ko'rish kerak
+        address: {
+          create: dto.address,
+        },
+      },
     });
 
     return this.findOne(find_dto);
