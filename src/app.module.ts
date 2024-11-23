@@ -11,6 +11,13 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuthorsModule } from './modules/authors/authors.module';
 import { UserModule } from './modules/user/user.module';
 import { CustomerModule } from './modules/customer/customer.module';
+import { RegionModule } from './modules/region/region.module';
+import { BookModule } from './modules/book/book.module';
+import { LocationModule } from './modules/location/location.module';
+import { PublishingModule } from './modules/publishing/publishing.module';
+import { RoleModule } from './modules/role/role.module';
+import { SmsModule } from './modules/sms/sms.module';
+import { StockModule } from './modules/stock/stock.module';
 
 @Module({
   imports: [
@@ -23,6 +30,13 @@ import { CustomerModule } from './modules/customer/customer.module';
     AuthorsModule,
     UserModule,
     CustomerModule,
+    RegionModule,
+    BookModule,
+    LocationModule,
+    PublishingModule,
+    RoleModule,
+    SmsModule,
+    StockModule,
   ],
   controllers: [AppController],
   providers: [
