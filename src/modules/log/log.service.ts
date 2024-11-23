@@ -12,6 +12,7 @@ export class LogService {
 
   async create(createLogDto: unknown) {
     // custom implement
+    console.log(createLogDto);
   }
 
   async findAll(dto: FindAllLogDto) {
