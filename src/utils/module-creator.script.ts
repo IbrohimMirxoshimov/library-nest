@@ -85,8 +85,10 @@ import { Create${capitalizeFirst(name)}Dto, FindAll${capitalizeFirst(name)}Dto, 
 export class ${capitalizeFirst(name)}Service implements ICrudService<${name}> {
   constructor(private prisma: PrismaService) {}
 
-  async create(create${capitalizeFirst(name)}Dto: Create${capitalizeFirst(name)}Dto) {
-    // custom implement
+  async create(dto: Create${capitalizeFirst(name)}Dto) {
+    return await this.prisma.${name}.create({
+      data: dto,
+    });
   }
 
   async findOne(dto: FindOneLiDto) {
@@ -172,7 +174,7 @@ function createModuleFiles(moduleName: string, basePath: string) {
 
 // Main execution
 const moduleNames = [
-  'customer',
+  'comment', 'region',
 ];
 
 // Get the base path (assuming the script is run from the project root)
