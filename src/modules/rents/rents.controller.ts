@@ -6,7 +6,12 @@ import { RequirePermissions } from 'src/common/decorators/permissions.decorators
 import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { ReqUser } from '../auth/auth.interface';
-import { CreateRentDto, FindAllRentDto, UpdateRentDto } from './rents.dto';
+import {
+  CreateCommentToRentDto,
+  CreateRentDto,
+  FindAllRentDto,
+  UpdateRentDto,
+} from './rents.dto';
 import { RentService } from './rents.service';
 
 @ApiBearerAuth()
@@ -58,5 +63,15 @@ export class RentsController {
   @Post('/:id/return')
   return(@Param() find_dto: FindOneWithLiDto) {
     return this.rentsService.return(find_dto);
+  }
+
+  @RequirePermissions(Permissions.COMMENT_CREATE)
+  @Post('/:id/comment')
+  createComment(
+    @Param() find_dto: FindOneWithLiDto,
+    @Body() dto: CreateCommentToRentDto,
+    @CurrentUser() user: ReqUser,
+  ) {
+    return this.rentsService.createComment(find_dto, dto, user);
   }
 }

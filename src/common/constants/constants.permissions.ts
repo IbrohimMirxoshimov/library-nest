@@ -70,4 +70,10 @@ export const Permissions = {
   CUSTOMER_READ: 102,
   CUSTOMER_UPDATE: 103,
   CUSTOMER_DELETE: 104,
+
+  // COMMENT permissions
+  COMMENT_CREATE: 111,
+  COMMENT_READ: 112,
+  COMMENT_UPDATE: 113,
+  COMMENT_DELETE: 114,
 } as const;
