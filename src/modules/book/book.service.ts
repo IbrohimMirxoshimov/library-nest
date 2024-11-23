@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { book } from '@prisma/client';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -13,10 +13,6 @@ import { CreateBookDto, FindAllBookDto, UpdateBookDto } from './book.dto';
 export class BookService implements ICrudService<book> {
   constructor(private prisma: PrismaService) {}
 
-  async create(createBookDto: CreateBookDto) {
-    // custom implement
-  }
-
   async findOne(dto: FindOneLiDto) {
     return this.prisma.book.findFirst({
       where: dto,
@@ -26,7 +22,7 @@ export class BookService implements ICrudService<book> {
   async update(find_dto: FindOneLiDto, dto: UpdateBookDto) {
     await this.prisma.book.update({
       where: find_dto,
-      data: dto,
+      data: { ...dto, searchable_name: await this.createSearchableName(dto) },
     });
 
     return this.findOne(find_dto);
@@ -52,5 +48,31 @@ export class BookService implements ICrudService<book> {
     });
 
     return pagination;
+  }
+
+  async createSearchableName(book: { name: string; author_id: number }) {
+    const author = await this.prisma.author.findFirst({
+      where: { id: book.author_id },
+    });
+
+    // TODO add publisher name
+    // add collections names
+
+    if (!author) {
+      throw new BadRequestException('Author not found');
+    }
+
+    // TODO krildan lotinga o'giriadigan funksiya chaqirish kerak
+    // va faqat ingliz alifbosi qoladigan funskiya ham
+    return `${book.name}_${author.name}`.toLocaleLowerCase();
+  }
+
+  async create(dto: CreateBookDto) {
+    return this.prisma.book.create({
+      data: {
+        ...dto,
+        searchable_name: await this.createSearchableName(dto),
+      },
+    });
   }
 }
