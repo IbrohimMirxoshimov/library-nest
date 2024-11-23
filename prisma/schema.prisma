@@ -107,13 +107,21 @@ model location {
 }
 
 model region {
-  id         Int        @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
-  created_at DateTime   @default(now())
-  updated_at DateTime   @default(now()) @updatedAt
+  code       String?   @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
+
+  // Self-relation fields
+  parent_id Int?
+  parent    region?    @relation("region_to_region", fields: [parent_id], references: [id])
+  children  region[]   @relation("region_to_region")
   // 
-  locations  location[]
+  locations location[]
+
+  @@index([parent_id])
 }
 
 model rent {
@@ -285,4 +293,6 @@ model book {
   // 
   stocks          stock[]
   comment         comment[]
+
+  // TODO add tags string array column for searching
 }

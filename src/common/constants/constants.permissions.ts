@@ -76,4 +76,10 @@ export const Permissions = {
   COMMENT_READ: 112,
   COMMENT_UPDATE: 113,
   COMMENT_DELETE: 114,
+
+  // REGION permissions
+  REGION_CREATE: 121,
+  REGION_READ: 122,
+  REGION_UPDATE: 123,
+  REGION_DELETE: 124,
 } as const;
