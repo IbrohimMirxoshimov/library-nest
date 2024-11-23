@@ -13,8 +13,10 @@ import { CreateRoleDto, FindAllRoleDto, UpdateRoleDto } from './role.dto';
 export class RoleService implements ICrudService<role> {
   constructor(private prisma: PrismaService) {}
 
-  async create(createRoleDto: CreateRoleDto) {
-    // custom implement
+  async create(dto: CreateRoleDto) {
+    return this.prisma.role.create({
+      data: dto,
+    });
   }
 
   async findOne(dto: FindOneLiDto) {
