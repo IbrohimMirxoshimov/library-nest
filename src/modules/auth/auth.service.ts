@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { LoginDto, RegisterDto } from './auth.dto';
 import { JwtPayload } from './auth.interface';
-import { user } from '@prisma/client';
+import { user, UserStatus } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +71,7 @@ export class AuthService {
         phone: dto.phone,
         password: hashedPassword,
         role_id: dto.role_id,
-        status: 1,
+        status: UserStatus.ACTIVE,
       },
       include: { role: true },
     });
