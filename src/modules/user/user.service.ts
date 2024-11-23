@@ -1,7 +1,6 @@
 import {
   BadRequestException,
-  Injectable,
-  NotFoundException,
+  Injectable
 } from '@nestjs/common';
 import { user, UserStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -21,8 +20,14 @@ export class UserService implements ICrudService<user> {
   async create(createUserDto: CreateUserDto) {
     // Check if the phone number is already registered in system
     const existingUsersCount = await this.prisma.user.count({
-      where: { phone: createUserDto.phone },
+      where: {
+        phone: createUserDto.phone,
+        role_id: {
+          not: null,
+        },
+      },
     });
+
     if (existingUsersCount !== 0) {
       throw new BadRequestException('Phone number already registered');
     }
@@ -52,19 +57,20 @@ export class UserService implements ICrudService<user> {
 
   async findOne(dto: FindOneDto) {
     const user = await this.prisma.user.findFirst({
-      where: { ...dto, NOT: { role: null } },
+      where: { ...dto, NOT: { role_id: null } },
       include: { role: true },
     });
-    if (!user) {
-      throw new NotFoundException("User doesn't exist");
+
+    if (user) {
+      user.password = null;
     }
-    user.password = null;
+
     return user;
   }
 
   async update(find_dto: FindOneDto, dto: UpdateUserDto) {
     await this.prisma.user.update({
-      where: { ...find_dto, NOT: { role: null } },
+      where: { ...find_dto, NOT: { role_id: null } },
       data: dto,
     });
 
@@ -73,7 +79,7 @@ export class UserService implements ICrudService<user> {
 
   async remove(find_dto: FindOneDto) {
     await this.prisma.user.update({
-      where: { ...find_dto, NOT: { role: null } },
+      where: { ...find_dto, NOT: { role_id: null } },
       data: {
         deleted_at: new Date(),
       },
@@ -83,7 +89,7 @@ export class UserService implements ICrudService<user> {
   async findAll(dto: FindAllUserDto) {
     const where = {
       ...dto.filter,
-      NOT: { role: null },
+      NOT: { role_id: null },
     };
     return await getPaginationResponse({
       items: this.prisma.user.findMany({
