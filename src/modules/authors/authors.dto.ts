@@ -3,15 +3,15 @@ import { Prisma } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEnum,
-  IsNotEmptyObject,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { FindAllDto } from '../../common/dto/find-all.dto';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { ApiEnum } from '../../utils/swagger/ApiEnum';
+import { SearchableField } from '../../common/class-validators/SearchableField';
 
 export class CreateAuthorDto
   implements ClassImplementation<Prisma.authorCreateInput>
@@ -24,22 +24,7 @@ export class CreateAuthorDto
 export class UpdateAuthorDto extends CreateAuthorDto {}
 
 class AuthorFilterDto implements ClassImplementation<Prisma.authorWhereInput> {
-  @ApiPropertyOptional({
-    title: 'Name of the author',
-    description:
-      'Search will be performed, records are selected if they contain given input',
-    type: String,
-  })
-  @Transform(({ value }) => {
-    // validate initial input type manually
-    if (!value || typeof value !== 'string') return {};
-    return {
-      contains: value,
-      mode: 'insensitive',
-    };
-  })
-  // empty object is received after transformation if initial type was invalid
-  @IsNotEmptyObject({}, { message: 'name must be a string' })
+  @SearchableField()
   @IsOptional()
   name?: string;
 }

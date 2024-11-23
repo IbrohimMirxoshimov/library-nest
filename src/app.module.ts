@@ -9,6 +9,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RentsModule } from './modules/rents/rents.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuthorsModule } from './modules/authors/authors.module';
+import { UserModule } from './modules/user/user.module';
+import { CustomerModule } from './modules/customer/customer.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { AuthorsModule } from './modules/authors/authors.module';
     AuthModule,
     RentsModule,
     AuthorsModule,
+    UserModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [

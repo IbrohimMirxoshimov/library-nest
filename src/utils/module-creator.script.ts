@@ -26,10 +26,7 @@ const controllerTemplate = (name: string) => `import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Permissions } from 'src/common/constants/constants.permissions';
-import {
-  RequireLocation,
-  RequirePermissions,
-} from 'src/common/decorators/permissions.decorators';
+import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
 import { Create${capitalizeFirst(name)}Dto, FindAll${capitalizeFirst(name)}Dto, Update${capitalizeFirst(name)}Dto } from './${name}.dto';
@@ -41,7 +38,6 @@ export class ${capitalizeFirst(name)}Controller {
   constructor(private readonly ${name}Service: ${capitalizeFirst(name)}Service) {}
 
   @RequirePermissions(Permissions.${name.toUpperCase()}_CREATE)
-  @RequireLocation()
   @Post()
   create(@Body() dto: Create${capitalizeFirst(name)}Dto) {
     return this.${name}Service.create(dto);
@@ -176,15 +172,7 @@ function createModuleFiles(moduleName: string, basePath: string) {
 
 // Main execution
 const moduleNames = [
-  'users',
-  'roles',
-  'locations',
-  'books',
-  'authors',
-  'stocks',
-  'publishings',
-  'sms',
-  'logs',
+  'customer',
 ];
 
 // Get the base path (assuming the script is run from the project root)

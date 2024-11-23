@@ -1,25 +1,38 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsInt, IsISO8601, IsOptional } from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 import { transformToNumber } from 'src/utils/transformers';
-import { ClassImplementation } from 'src/utils/type.utils';
 
 /**
  * Bu DTO ishlatilgan joylar odatda swaggerga chiqmaydi
  * location_id guard orqali qo'yiladi
- * location bo'lmasligi ham mumkin
  */
 export class LocationIdDto {
+  @IsInt()
+  location_id: number;
+}
+
+export class LocationIdDtoOptional {
+  @ApiPropertyOptional()
   @IsInt()
   @IsOptional()
   location_id?: number;
 }
 
 /**
+ * Id va location_id required
+ */
+export class FindOneWithLiDto extends LocationIdDto {
+  @ApiProperty()
+  @Transform(transformToNumber)
+  @IsInt()
+  id: number;
+}
+
+/**
  * Id va location_id
  */
-export class FindOneLiDto extends LocationIdDto {
+export class FindOneLiDto extends LocationIdDtoOptional {
   @ApiProperty()
   @Transform(transformToNumber)
   @IsInt()

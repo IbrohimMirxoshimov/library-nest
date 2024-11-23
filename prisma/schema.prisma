@@ -27,6 +27,11 @@ model role {
   users       user[]
 }
 
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
 model user {
   id                   Int        @id @default(autoincrement())
   first_name           String
@@ -41,12 +46,12 @@ model user {
   passport_id          String?    @unique()
   passport_image       String?
   created_at           DateTime   @default(now())
-  updated_at           DateTime   @default(now())
+  updated_at           DateTime   @default(now()) @updatedAt
   deleted_at           DateTime?
   extra_phone          String?
   extra_phone_second   String?
   passport_pin         String?    @unique()
-  status               Int?       @default(1)
+  status               UserStatus @default(ACTIVE)
   balance              Int?       @default(0)
   blocking_reason      String?
   registered_locations Int[]      @default([])
@@ -57,7 +62,8 @@ model user {
   role_id              Int?
   role                 role?      @relation(fields: [role_id], references: [id])
   // 
-  rents                rent[]
+  rents_customer       rent[]     @relation("customer_rents")
+  rents_librarian      rent[]     @relation("librarian_rents")
   sms                  sms[]
   sms_bulks            sms_bulk[]
 }
@@ -70,7 +76,7 @@ model address {
   latitude     Float?
   longitude    Float?
   created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now()) @updatedAt
   country_code String     @default("uz")
   street       String?
   home         String?
@@ -84,7 +90,7 @@ model location {
   name        String
   description String?
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime?
   active      Boolean   @default(true)
   link        String?
@@ -104,53 +110,70 @@ model region {
   id         Int        @id @default(autoincrement())
   name       String
   created_at DateTime   @default(now())
-  updated_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
   deleted_at DateTime?
   // 
   locations  location[]
 }
 
 model rent {
-  id             Int       @id @default(autoincrement())
-  leased_at      DateTime
-  returning_date DateTime
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @default(now())
-  deleted_at     DateTime?
-  custom_id      Int?
-  rejected       Boolean   @default(false)
-  returned_at    DateTime?
+  id          Int       @id @default(autoincrement())
+  rented_at   DateTime
+  due_date    DateTime
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
+  deleted_at  DateTime?
+  custom_id   Int?
+  rejected    Boolean   @default(false)
+  returned_at DateTime?
+
+  // Relationships
+  customer_id  Int
+  customer     user     @relation("customer_rents", fields: [customer_id], references: [id])
   // 
-  user_id        Int
-  user           user      @relation(fields: [user_id], references: [id])
+  librarian_id Int
+  librarian    user     @relation("librarian_rents", fields: [librarian_id], references: [id])
   //
-  stock_id       Int
-  stock          stock     @relation(fields: [stock_id], references: [id])
+  stock_id     Int
+  stock        stock    @relation(fields: [stock_id], references: [id])
   // 
-  location_id    Int
-  location       location  @relation(fields: [location_id], references: [id])
-  // 
-  comment        comment[]
+  location_id  Int
+  location     location @relation(fields: [location_id], references: [id])
+
+  // Related
+  comment comment[]
+}
+
+enum StockSource {
+  PURCHASED
+  GIFT
+}
+
+enum StockStatus {
+  ACTIVE
+  RESTRICTED
+  NEEDS_REPAIR
+  LOST
+  INACTIVE
 }
 
 model stock {
-  id          Int       @id @default(autoincrement())
-  busy        Boolean   @default(false)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
+  id          Int          @id @default(autoincrement())
+  busy        Boolean      @default(false)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @default(now()) @updatedAt
   deleted_at  DateTime?
   description String?
-  status      Int?
-  price       Int?      @default(50000)
+  status      StockStatus  @default(ACTIVE)
+  price       Int?
   // qaysi yo'l bilan kutubxanaga kelgan
-  // enum yangi | hadya
-  source      Int
+  source      StockSource?
   // 
   location_id Int
-  location    location  @relation(fields: [location_id], references: [id])
+  location    location     @relation(fields: [location_id], references: [id])
   //
   book_id     Int
-  book        book      @relation(fields: [book_id], references: [id])
+  book        book         @relation(fields: [book_id], references: [id])
   // 
   rents       rent[]
 }
@@ -159,7 +182,7 @@ model comment {
   id         Int      @id @default(autoincrement())
   text       String
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   user_id    Int
   rent_id    Int?
   book_id    Int?
@@ -198,7 +221,7 @@ model sms_bulk {
   id         Int       @id @default(autoincrement())
   text       String
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   user_id    Int?
   // 
@@ -211,7 +234,7 @@ model publishing {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
 }
 
@@ -220,7 +243,7 @@ model collection {
   name       String
   sort       Int?      @default(0)
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   // 
   books      book[]
@@ -230,7 +253,7 @@ model author {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
   creator_id Int?
   // 
@@ -243,12 +266,12 @@ model book {
   searchable_name String
   description     String?
   image           String?
-  rent_duration   Int?        @default(15)
+  rent_duration   Int?
   printed_at      DateTime?
   pages           Int?
   sort            Int?        @default(0)
   created_at      DateTime    @default(now())
-  updated_at      DateTime    @default(now())
+  updated_at      DateTime    @default(now()) @updatedAt
   deleted_at      DateTime?
   author_id       Int?
   books_group_id  Int?
