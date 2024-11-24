@@ -23,9 +23,11 @@ specifiers:
   bcrypt: ^5.1.1
   class-transformer: ^0.5.1
   class-validator: ^0.14.1
+  date-fns: ^4.1.0
   eslint: ^8.42.0
   eslint-config-prettier: ^9.0.0
   eslint-plugin-prettier: ^5.0.0
+  husky: ^8.0.0
   jest: ^29.5.0
   passport: ^0.7.0
   passport-jwt: ^4.0.1
@@ -53,6 +55,7 @@ dependencies:
   bcrypt: 5.1.1
   class-transformer: 0.5.1
   class-validator: 0.14.1
+  date-fns: 4.1.0
   passport-jwt: 4.0.1
   reflect-metadata: 0.2.2
   rxjs: 7.8.1
@@ -72,6 +75,7 @@ devDependencies:
   eslint: 8.57.1
   eslint-config-prettier: 9.1.0_eslint@8.57.1
   eslint-plugin-prettier: 5.2.1_ayndg7zgbp65x77daxvqwr6bji
+  husky: 8.0.3
   jest: 29.7.0_ftf6pzout7xwov7mtrat4kvhdq
   passport: 0.7.0
   prettier: 3.3.3
@@ -2367,6 +2371,10 @@ packages:
       which: 2.0.2
     dev: true
 
+  /date-fns/4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+    dev: false
+
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
     peerDependencies:
@@ -3204,6 +3212,12 @@ packages:
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+    dev: true
+
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /iconv-lite/0.4.24:

@@ -82,4 +82,6 @@ export const Permissions = {
   REGION_READ: 122,
   REGION_UPDATE: 123,
   REGION_DELETE: 124,
+
+  STATISTICS_READ: 131,
 } as const;
