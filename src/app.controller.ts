@@ -5,7 +5,6 @@ import { Permissions } from './common/constants/constants.permissions';
 import { CurrentUser } from './common/decorators/current-user.decorator';
 import { RequirePermissions } from './common/decorators/permissions.decorators';
 import { ReqUser } from './modules/auth/auth.interface';
-import { LogService } from './modules/log/log.service';
 
 @ApiBearerAuth()
 @Controller()
@@ -15,6 +14,6 @@ export class AppController {
   @Get()
   @RequirePermissions(Permissions.AUTHOR_CREATE)
   getHello(@CurrentUser() user: ReqUser) {
-        return this.appService.getHello(user);
+    return this.appService.getHello(user);
   }
 }
