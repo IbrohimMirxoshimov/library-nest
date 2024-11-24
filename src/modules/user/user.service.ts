@@ -1,7 +1,4 @@
-import {
-  BadRequestException,
-  Injectable
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { user, UserStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { FindOneDto } from 'src/common/dto/common.dto';

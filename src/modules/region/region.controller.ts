@@ -12,7 +12,11 @@ import { Permissions } from 'src/common/constants/constants.permissions';
 import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { CreateRegionDto, FindAllRegionDto, UpdateRegionDto } from './region.dto';
+import {
+  CreateRegionDto,
+  FindAllRegionDto,
+  UpdateRegionDto,
+} from './region.dto';
 import { RegionService } from './region.service';
 
 @ApiBearerAuth()
