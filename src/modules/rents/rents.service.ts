@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UserStatus } from '@prisma/client';
+import { stock, UserStatus } from '@prisma/client';
 import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { getDateDifferenceInDays } from 'src/utils/date.util';
@@ -40,7 +40,7 @@ export class RentService {
     return this.prisma.book.findMany();
   }
 
-  private async canGetMoreRentStrategy(stock: any, customer_id: number) {
+  private async canGetMoreRentStrategy(stock: stock, customer_id: number) {
     const activeRentsCount = await this.prisma.rent.count({
       where: {
         customer_id: customer_id,
@@ -51,7 +51,7 @@ export class RentService {
     if (activeRentsCount === 0) return;
 
     // Check if the book is a required book
-    if (await this.isRequiredBook(stock.bookId)) {
+    if (await this.isRequiredBook(stock.book_id)) {
       if (activeRentsCount < 5) return;
       throw new BadRequestException(
         'Additional book cannot be issued. Book is in required list!',
