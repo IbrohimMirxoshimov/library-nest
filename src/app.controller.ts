@@ -5,6 +5,7 @@ import { Permissions } from './common/constants/constants.permissions';
 import { CurrentUser } from './common/decorators/current-user.decorator';
 import { RequirePermissions } from './common/decorators/permissions.decorators';
 import { ReqUser } from './modules/auth/auth.interface';
+import { LogService } from './modules/log/log.service';
 
 @ApiBearerAuth()
 @Controller()
