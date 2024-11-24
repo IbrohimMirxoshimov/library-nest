@@ -1,11 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import {
-	IsEnum,
-	IsInt,
-	IsISO8601,
-	IsOptional,
-	IsString
+  IsEnum,
+  IsInt,
+  IsISO8601,
+  IsOptional,
+  IsString,
 } from 'class-validator';
 import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
 import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
@@ -21,9 +21,10 @@ export class CreateBookDto
   @IsString()
   name: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsString()
-  searchable_name: string;
+  @IsOptional()
+  searchable_name?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -33,7 +34,7 @@ export class CreateBookDto
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
-  image?: string;
+  image_id?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -55,15 +56,9 @@ export class CreateBookDto
   @IsInt()
   sort?: number;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty()
   @IsInt()
-  author_id?: number;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt()
-  books_group_id?: number;
+  author_id: number;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -80,10 +75,9 @@ export class CreateBookDto
   @IsInt()
   few?: number;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty()
   @IsString()
-  language?: string;
+  language: string;
 }
 
 export class UpdateBookDto extends CreateBookDto {}

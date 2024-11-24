@@ -2,7 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-  Injectable
+  Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ReqUser } from 'src/modules/auth/auth.interface';

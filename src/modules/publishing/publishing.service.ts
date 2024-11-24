@@ -7,14 +7,20 @@ import {
   getPaginationResponse,
 } from 'src/utils/pagination.utils';
 import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreatePublishingDto, FindAllPublishingDto, UpdatePublishingDto } from './publishing.dto';
+import {
+  CreatePublishingDto,
+  FindAllPublishingDto,
+  UpdatePublishingDto,
+} from './publishing.dto';
 
 @Injectable()
 export class PublishingService implements ICrudService<publishing> {
   constructor(private prisma: PrismaService) {}
 
-  async create(createPublishingDto: CreatePublishingDto) {
-    // custom implement
+  async create(dto: CreatePublishingDto) {
+    return this.prisma.publishing.create({
+      data: dto,
+    });
   }
 
   async findOne(dto: FindOneLiDto) {

@@ -7,14 +7,20 @@ import {
   getPaginationResponse,
 } from 'src/utils/pagination.utils';
 import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreateLocationDto, FindAllLocationDto, UpdateLocationDto } from './location.dto';
+import {
+  CreateLocationDto,
+  FindAllLocationDto,
+  UpdateLocationDto,
+} from './location.dto';
 
 @Injectable()
 export class LocationService implements ICrudService<location> {
   constructor(private prisma: PrismaService) {}
 
-  async create(createLocationDto: CreateLocationDto) {
-    // custom implement
+  async create(dto: CreateLocationDto) {
+    return this.prisma.location.create({
+      data: dto,
+    });
   }
 
   async findOne(dto: FindOneLiDto) {

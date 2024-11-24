@@ -1,32 +1,29 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import {
-	IsEnum,
-	IsInt,
-	IsNotEmpty,
-	IsOptional,
-	IsString
-} from 'class-validator';
+import { IsEnum, IsIn, IsInt, IsOptional, IsString } from 'class-validator';
 import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
 import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
+import { Permissions } from 'src/common/constants/constants.permissions';
 import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
-
 
 export class CreateRoleDto
   implements ClassImplementation<Prisma.roleCreateInput>
 {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt({ each: true })
-  permissions?: number[];
+  @ApiEnum(Permissions, {
+    isArray: true,
+    required: true,
+  })
+  @IsIn(Object.values(Permissions), {
+    each: true,
+  })
+  permissions: number[];
 
   @ApiPropertyOptional()
   @IsOptional()

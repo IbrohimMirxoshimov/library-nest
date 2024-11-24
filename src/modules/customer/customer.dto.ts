@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Prisma, UserStatus } from '@prisma/client';
 import {
   IsEnum,
+  IsInt,
   IsISO8601,
   IsNotEmpty,
   IsOptional,
@@ -9,17 +10,39 @@ import {
 } from 'class-validator';
 import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
 import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
+import { IsUzbPhoneNumber } from 'src/common/class-validators/IsUzbPhoneNumber';
 import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
 import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
 import { ClassImplementation } from 'src/utils/type.utils';
-import { LocationIdDto } from '../../common/dto/common.dto';
 import { SearchableField } from '../../common/class-validators/SearchableField';
-import { IsUzbPhoneNumber } from 'src/common/class-validators/IsUzbPhoneNumber';
+import { LocationIdDto } from '../../common/dto/common.dto';
+
+class CustomerAddressDto
+  implements ClassImplementation<Prisma.addressUncheckedCreateWithoutUserInput>
+{
+  @ApiProperty()
+  @IsString()
+  address_line: string;
+
+  @ApiProperty()
+  @IsInt()
+  region_id: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  sub_region_id?: number | null;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  id?: number;
+}
 
 export class CreateCustomerDto
   extends LocationIdDto
-  implements ClassImplementation<Prisma.userCreateInput>
+  implements ClassImplementation<Omit<Prisma.userCreateInput, 'address'>>
 {
   @ApiProperty()
   @IsString()
@@ -70,9 +93,13 @@ export class CreateCustomerDto
   @IsString()
   blocking_reason?: string;
 
-  // TODO
-  // address?: Prisma.addressCreateNestedOneWithoutUserInput | undefined;
-  // balance?: number | null | undefined;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  balance?: number | null;
+
+  @ApplyNestedOptional(CustomerAddressDto)
+  address?: Prisma.addressUncheckedCreateWithoutUserInput;
 
   @ApiEnum(UserStatus)
   @IsEnum(UserStatus)
@@ -128,7 +155,7 @@ class CustomerFilterDto
   @ApiPrismaIntFilter()
   @IsOptional()
   @IsPrismaIntFilter()
-  id?: number | Prisma.IntFilter<'user'> | undefined;
+  id?: number | Prisma.IntFilter<'user'>;
 }
 
 export class FindAllCustomerDto extends FindAllDto {

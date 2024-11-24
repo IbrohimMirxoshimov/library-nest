@@ -69,20 +69,26 @@ model user {
 }
 
 model address {
-  id           Int        @id @default(autoincrement())
-  region       String
-  town         String?
+  id           Int      @id @default(autoincrement())
   address_line String
   latitude     Float?
   longitude    Float?
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now()) @updatedAt
-  country_code String     @default("uz")
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+  country_code String   @default("uz")
   street       String?
   home         String?
+
   // 
-  location     location[]
-  user         user[]
+  region_id     Int
+  region        region  @relation("region_to_address", fields: [region_id], references: [id])
+  // 
+  sub_region_id Int?
+  sub_region    region? @relation("sub_region_to_address", fields: [sub_region_id], references: [id])
+
+  // many
+  location location[]
+  user     user[]
 }
 
 model location {
@@ -107,13 +113,24 @@ model location {
 }
 
 model region {
-  id         Int        @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
-  created_at DateTime   @default(now())
-  updated_at DateTime   @default(now()) @updatedAt
+  code       String?   @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   deleted_at DateTime?
-  // 
-  locations  location[]
+
+  // Self-relation fields
+  parent_id Int?
+  parent    region?  @relation("region_to_region", fields: [parent_id], references: [id])
+  children  region[] @relation("region_to_region")
+
+  // many relations
+  locations           location[]
+  region_addresses    address[]  @relation("region_to_address")
+  subregion_addresses address[]  @relation("sub_region_to_address")
+
+  @@index([parent_id])
 }
 
 model rent {
@@ -285,4 +302,6 @@ model book {
   // 
   stocks          stock[]
   comment         comment[]
+
+  // TODO add tags string array column for searching
 }

@@ -1,18 +1,23 @@
 import {
-  Injectable,
   BadRequestException,
+  Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateRentDto, FindAllRentDto, UpdateRentDto } from './rents.dto';
-import { getDateDifferenceInDays } from 'src/utils/date.util';
-import { ReqUser } from '../auth/auth.interface';
+import { UserStatus } from '@prisma/client';
 import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { getDateDifferenceInDays } from 'src/utils/date.util';
 import {
   getPaginationOptions,
   getPaginationResponse,
 } from 'src/utils/pagination.utils';
-import { UserStatus } from '@prisma/client';
+import { ReqUser } from '../auth/auth.interface';
+import {
+  CreateCommentToRentDto,
+  CreateRentDto,
+  FindAllRentDto,
+  UpdateRentDto,
+} from './rents.dto';
 
 @Injectable()
 export class RentService {
@@ -380,9 +385,33 @@ export class RentService {
     return updatedRent;
   }
 
+  async createComment(
+    find_dto: FindOneWithLiDto,
+    dto: CreateCommentToRentDto,
+    user: ReqUser,
+  ) {
+    const rent = await this.prisma.rent.findFirstOrThrow({
+      where: find_dto,
+      select: {
+        id: true,
+      },
+    });
+
+    return this.prisma.comment.create({
+      data: {
+        text: dto.text,
+        user_id: user.id,
+        rent_id: rent.id,
+      },
+    });
+  }
+
   async findOne(dto: FindOneLiDto) {
     return this.prisma.rent.findFirst({
       where: dto,
+      include: {
+        comment: true,
+      },
     });
   }
 

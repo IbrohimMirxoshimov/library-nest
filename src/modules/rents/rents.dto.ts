@@ -1,7 +1,13 @@
 // create-rent.dto.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { IsEnum, IsInt, IsISO8601, IsOptional } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsISO8601,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import {
   DateTimeRangeDto,
   IsDateTimeRange,
@@ -38,6 +44,14 @@ export class CreateRentDto
   @IsOptional()
   @IsInt()
   custom_id?: number;
+}
+
+export class CreateCommentToRentDto
+  implements ClassImplementation<Prisma.commentUncheckedCreateInput>
+{
+  @ApiProperty()
+  @IsString()
+  text: string;
 }
 
 export class UpdateRentDto

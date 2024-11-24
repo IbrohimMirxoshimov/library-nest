@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { role } from '@prisma/client';
+import { region } from '@prisma/client';
 import { FindOneLiDto } from 'src/common/dto/common.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
@@ -7,26 +7,30 @@ import {
   getPaginationResponse,
 } from 'src/utils/pagination.utils';
 import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreateRoleDto, FindAllRoleDto, UpdateRoleDto } from './role.dto';
+import {
+  CreateRegionDto,
+  FindAllRegionDto,
+  UpdateRegionDto,
+} from './region.dto';
 
 @Injectable()
-export class RoleService implements ICrudService<role> {
+export class RegionService implements ICrudService<region> {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateRoleDto) {
-    return this.prisma.role.create({
+  async create(dto: CreateRegionDto) {
+    return await this.prisma.region.create({
       data: dto,
     });
   }
 
   async findOne(dto: FindOneLiDto) {
-    return this.prisma.role.findFirst({
+    return this.prisma.region.findFirst({
       where: dto,
     });
   }
 
-  async update(find_dto: FindOneLiDto, dto: UpdateRoleDto) {
-    await this.prisma.role.update({
+  async update(find_dto: FindOneLiDto, dto: UpdateRegionDto) {
+    await this.prisma.region.update({
       where: find_dto,
       data: dto,
     });
@@ -35,20 +39,21 @@ export class RoleService implements ICrudService<role> {
   }
 
   async remove(find_dto: FindOneLiDto) {
-    await this.prisma.role.update({
+    await this.prisma.region.update({
       where: find_dto,
-      // TODO_IMPORTANT
-      data: {},
+      data: {
+        deleted_at: new Date(),
+      },
     });
   }
 
-  async findAll(dto: FindAllRoleDto) {
+  async findAll(dto: FindAllRegionDto) {
     const pagination = await getPaginationResponse({
-      items: this.prisma.role.findMany({
+      items: this.prisma.region.findMany({
         where: dto.filter,
         ...getPaginationOptions(dto),
       }),
-      count: this.prisma.role.count({ where: dto.filter }),
+      count: this.prisma.region.count({ where: dto.filter }),
       dto,
     });
 

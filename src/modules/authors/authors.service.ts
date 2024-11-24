@@ -1,36 +1,30 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
 import { author } from '@prisma/client';
+import { FindOneDto } from '../../common/dto/common.dto';
+import { ICrudService } from '../../common/interfaces/crud.interface';
+import { PrismaService } from '../../prisma/prisma.service';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '../../utils/pagination.utils';
+import { ReqUser } from '../auth/auth.interface';
 import {
   CreateAuthorDto,
   GetListAuthorDto,
   UpdateAuthorDto,
 } from './authors.dto';
-import { ReqUser } from '../auth/auth.interface';
-import { FindOneDto } from '../../common/dto/common.dto';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from '../../utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
 
 @Injectable()
 export class AuthorsService implements ICrudService<author> {
   constructor(private prisma: PrismaService) {}
 
   async create(createAuthorDto: CreateAuthorDto, currentUser: ReqUser) {
-    try {
-      return await this.prisma.author.create({
-        data: {
-          name: createAuthorDto.name,
-          creator_id: currentUser.id,
-        },
-      });
-    } catch (error) {
-      throw new BadRequestException(
-        'Failed to create author: ' + error.message,
-      );
-    }
+    return await this.prisma.author.create({
+      data: {
+        name: createAuthorDto.name,
+        creator_id: currentUser.id,
+      },
+    });
   }
 
   async findOne(dto: FindOneDto) {

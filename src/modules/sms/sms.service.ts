@@ -15,6 +15,7 @@ export class SmsService implements ICrudService<sms> {
 
   async create(createSmsDto: CreateSmsDto) {
     // custom implement
+    console.log(createSmsDto);
   }
 
   async findOne(dto: FindOneLiDto) {

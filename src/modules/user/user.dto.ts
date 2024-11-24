@@ -40,10 +40,9 @@ export class CreateUserDto
   @IsInt()
   role_id: number;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty()
   @IsString()
-  gender?: string;
+  gender: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}

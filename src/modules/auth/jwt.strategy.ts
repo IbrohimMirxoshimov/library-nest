@@ -6,6 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { app_config } from 'src/config/app.config';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ReqUser, JwtPayload } from './auth.interface';
+import { UserStatus } from '@prisma/client';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -23,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       include: { role: true },
     });
 
-    if (!user || user.status !== 1 || !user.role_id) {
+    if (!user || user.status !== UserStatus.ACTIVE || !user.role_id) {
       throw new UnauthorizedException('User is not active');
     }
 

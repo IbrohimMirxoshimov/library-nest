@@ -28,15 +28,9 @@ export class CreateLocationDto
   @IsString()
   description?: string;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty()
   @IsInt()
-  address_id?: number;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt()
-  region_id?: number;
+  region_id: number;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -47,6 +41,8 @@ export class CreateLocationDto
   @IsOptional()
   @IsBoolean()
   active?: boolean;
+
+  // TODO address qo'shish kerak
 }
 
 export class UpdateLocationDto extends CreateLocationDto {}
