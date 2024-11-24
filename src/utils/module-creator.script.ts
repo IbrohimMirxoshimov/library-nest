@@ -139,7 +139,7 @@ function capitalizeFirst(str: string) {
 function createModuleFiles(moduleName: string, basePath: string) {
   const modulePath = path.join(basePath, 'src', 'modules', moduleName);
   console.log(modulePath);
-  
+
   // Create module directory if it doesn't exist
   if (!fs.existsSync(modulePath)) {
     fs.mkdirSync(modulePath, { recursive: true });
@@ -173,9 +173,7 @@ function createModuleFiles(moduleName: string, basePath: string) {
 }
 
 // Main execution
-const moduleNames = [
-  'comment', 'region',
-];
+const moduleNames = ['comment', 'region'];
 
 // Get the base path (assuming the script is run from the project root)
 const basePath = process.cwd();

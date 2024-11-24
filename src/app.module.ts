@@ -13,6 +13,13 @@ import { UserModule } from './modules/user/user.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { PublicApiModule } from './modules/public-apis/public-api.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
+import { RegionModule } from './modules/region/region.module';
+import { BookModule } from './modules/book/book.module';
+import { LocationModule } from './modules/location/location.module';
+import { PublishingModule } from './modules/publishing/publishing.module';
+import { RoleModule } from './modules/role/role.module';
+import { SmsModule } from './modules/sms/sms.module';
+import { StockModule } from './modules/stock/stock.module';
 
 @Module({
   imports: [
@@ -27,6 +34,13 @@ import { StatisticsModule } from './modules/statistics/statistics.module';
     CustomerModule,
     PublicApiModule,
     StatisticsModule,
+    RegionModule,
+    BookModule,
+    LocationModule,
+    PublishingModule,
+    RoleModule,
+    SmsModule,
+    StockModule,
   ],
   controllers: [AppController],
   providers: [
