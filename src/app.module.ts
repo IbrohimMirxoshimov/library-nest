@@ -11,6 +11,8 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuthorsModule } from './modules/authors/authors.module';
 import { UserModule } from './modules/user/user.module';
 import { CustomerModule } from './modules/customer/customer.module';
+import { PublicApiModule } from './modules/public-apis/public-api.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { CustomerModule } from './modules/customer/customer.module';
     AuthorsModule,
     UserModule,
     CustomerModule,
+    PublicApiModule,
+    StatisticsModule,
   ],
   controllers: [AppController],
   providers: [
