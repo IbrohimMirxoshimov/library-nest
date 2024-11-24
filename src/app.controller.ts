@@ -14,6 +14,6 @@ export class AppController {
   @Get()
   @RequirePermissions(Permissions.AUTHOR_CREATE)
   getHello(@CurrentUser() user: ReqUser) {
-    return this.appService.getHello(user);
+        return this.appService.getHello(user);
   }
 }
