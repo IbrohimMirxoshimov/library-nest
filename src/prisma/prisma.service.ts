@@ -1,5 +1,5 @@
 // prisma.service.ts
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
@@ -32,21 +32,5 @@ export class PrismaService
 
   async onModuleDestroy() {
     await this.$disconnect();
-  }
-
-  // Helper method for location-based queries
-  async isResourceOwnedByLocation(
-    model: string,
-    resourceId: number,
-    locationId: number,
-  ): Promise<boolean> {
-    // @ts-ignore
-    const resource = await (this[model] as any).findFirst({
-      where: {
-        id: resourceId,
-        location_id: locationId,
-      },
-    });
-    return !!resource;
   }
 }

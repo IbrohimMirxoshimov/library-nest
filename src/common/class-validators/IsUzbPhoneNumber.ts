@@ -5,7 +5,7 @@ export function isUzbPhoneNumber(value: any) {
 }
 
 export function IsUzbPhoneNumber(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isUzbPhoneNumber',
       target: object.constructor,

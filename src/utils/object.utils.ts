@@ -29,6 +29,7 @@ export function toJsonWithSupportBigInt(data: any) {
 }
 
 export function omitProperty<T, K extends keyof T>(obj: T, key: K): Omit<T, K> {
+  // eslint-disable-next-line
   const { [key]: _, ...rest } = obj;
   return rest as Omit<T, K>;
 }

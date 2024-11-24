@@ -6,7 +6,7 @@ import {
 import { Prisma } from '@prisma/client';
 
 export function IsPrismaIntFilter(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isPrismaIntFilter',
       target: object.constructor,
@@ -14,7 +14,7 @@ export function IsPrismaIntFilter(validationOptions?: ValidationOptions) {
       constraints: [],
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           if (typeof value === 'number') return true;
 
           /**
