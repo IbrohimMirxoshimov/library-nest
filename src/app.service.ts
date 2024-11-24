@@ -6,7 +6,7 @@ export class AppService {
   getHello(user: ReqUser) {
     return {
       ok: true,
-      user
+      user,
     };
   }
 }
