@@ -11,6 +11,8 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuthorsModule } from './modules/authors/authors.module';
 import { UserModule } from './modules/user/user.module';
 import { CustomerModule } from './modules/customer/customer.module';
+import { PublicApiModule } from './modules/public-apis/public-api.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
 import { RegionModule } from './modules/region/region.module';
 import { BookModule } from './modules/book/book.module';
 import { LocationModule } from './modules/location/location.module';
@@ -30,6 +32,8 @@ import { StockModule } from './modules/stock/stock.module';
     AuthorsModule,
     UserModule,
     CustomerModule,
+    PublicApiModule,
+    StatisticsModule,
     RegionModule,
     BookModule,
     LocationModule,
