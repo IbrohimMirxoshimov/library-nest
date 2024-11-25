@@ -15,6 +15,7 @@ export const app_config = {
   backend_domain: process.env.BACKEND_DOMAIN,
   port: parseInt(process.env.PORT!),
   api_prefix: process.env.API_PREFIX || 'api',
+  old_database_url: process.env.OLD_DATABASE_URL,
 
   // file
   driver: process.env.FILE_DRIVER,

@@ -277,8 +277,16 @@ model author {
   books      book[]
 }
 
+enum BookImportance {
+  AUTO
+  NOT_NECESSARY
+  NECESSARY
+  RARE
+  EXPENSIVE
+}
+
 model book {
-  id              Int         @id @default(autoincrement())
+  id              Int             @id @default(autoincrement())
   name            String
   searchable_name String
   description     String?
@@ -286,19 +294,19 @@ model book {
   rent_duration   Int?
   printed_at      DateTime?
   pages           Int?
-  sort            Int?        @default(0)
-  created_at      DateTime    @default(now())
-  updated_at      DateTime    @default(now()) @updatedAt
+  price           Int?
+  sort            Int?            @default(0)
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @default(now()) @updatedAt
   deleted_at      DateTime?
   author_id       Int?
-  books_group_id  Int?
   collection_id   Int?
   isbn            String?
-  few             Int?        @default(2)
-  language        String?     @default("uz")
+  importance      BookImportance?
+  language        String?         @default("uz")
   // 
-  author          author?     @relation(fields: [author_id], references: [id])
-  collection      collection? @relation(fields: [collection_id], references: [id])
+  author          author?         @relation(fields: [author_id], references: [id])
+  collection      collection?     @relation(fields: [collection_id], references: [id])
   // 
   stocks          stock[]
   comment         comment[]
