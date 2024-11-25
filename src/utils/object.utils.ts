@@ -7,16 +7,14 @@ export function enumEntires(entity: object) {
 export function arrayToMap<T>(
   arr: T[],
   keyGetter: (item: T) => string | number,
-) {
-  return arr.reduce(
-    (pv, cv) => {
-      return {
-        ...pv,
-        [keyGetter(cv)]: cv,
-      };
-    },
-    {} as Record<string | number, T>,
-  );
+): Record<string, T> {
+  const map: any = {};
+
+  for (const item of arr) {
+    map[keyGetter(item)] = item;
+  }
+
+  return map;
 }
 
 // Does JSON.stringify, with support for BigInt (irreversible)
