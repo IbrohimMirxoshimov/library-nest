@@ -3,6 +3,7 @@ import { subDays } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetRentCountsDto, GetTopReadingBooksDto } from './statistics.dto';
 import { LocationIdDto } from 'src/common/dto/common.dto';
+import { BookImportance } from '@prisma/client';
 
 @Injectable()
 export class StatisticsService {
@@ -244,7 +245,7 @@ export class StatisticsService {
 
   async getFewBooks(location_id: number) {
     const books = await this.prisma.book.findMany({
-      where: { few: 1 },
+      where: { importance: BookImportance.NECESSARY },
       select: {
         id: true,
         name: true,
