@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { getPaginationResponse } from "src/utils/pagination.utils";
-import { FindAllBookPublicDto, FindAllPublicStats, FindOneBookPublicDto } from "./public.dto";
+import { ExpiredRentDto, FindAllBookPublicDto, FindAllPublicStats, FindOneBookPublicDto } from "./public.dto";
 
 @Injectable()
 export class PublicApiService {
@@ -11,14 +11,24 @@ export class PublicApiService {
       return getPaginationResponse({
         items: this.prisma.book.findMany({
           where: {
-            stocks: {
-              some: {
-                location_id: {
-                  in: dto.location_id || [1]
+            AND: [
+              {
+                stocks: {
+                  some: {
+                    location_id: {
+                      in: dto.location_id || [1]
+                    },
+                    busy: dto.busy,
+                  }
                 },
-                busy: dto.busy,
-              }
-            },
+              },
+              dto.search ? {
+                name: {
+                  contains: dto.search,
+                  mode: 'insensitive',
+                }
+              } : {},
+            ]
           },
           select: {
             id: true,
@@ -46,7 +56,7 @@ export class PublicApiService {
     }
 
     async getOne(dto: FindOneBookPublicDto) {
-      return this.prisma.book.findUnique({
+      const res = await this.prisma.book.findUnique({
         where: { id: dto.id },
         select: {
           id: true,
@@ -73,6 +83,10 @@ export class PublicApiService {
           },
         },
       });
+      if (!res) {
+        throw new NotFoundException('Book not found');
+      }
+      return res;
     }
 
     async getBookStatuses(dto: FindAllPublicStats) {
@@ -105,11 +119,35 @@ export class PublicApiService {
       })
     }
 
-    getDataByPhoneNumber() {
-
-    }
-
-    getStatistics() {
-      
+    async getExpiredRentsByPhone(dto: ExpiredRentDto) {
+      const threeDaysBack = new Date();
+      threeDaysBack.setDate(threeDaysBack.getDate() - 3);
+  
+      return getPaginationResponse({
+        items: this.prisma.rent.findMany({
+          where: {
+            customer: {
+              phone: dto.phone,
+            },
+            rejected: false,
+            returned_at: {
+              lt: threeDaysBack,
+            },
+          },
+          include: {
+            stock: {
+              include: {
+                book: true,
+              },
+            },
+            customer: true,
+          },
+          orderBy: {
+            returned_at: 'asc',
+          },
+        }),
+        count: this.prisma.rent.count({ where: dto.filter }),
+        dto
+      });
     }
 }
