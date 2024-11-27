@@ -8,7 +8,7 @@ import { app_config } from './config/app.config';
 import { PrismaErrorFilter } from './prisma/prisma.error.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: false });
 
   app.getHttpAdapter().getInstance().set('trust proxy', true);
   app.enableShutdownHooks();
