@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional,  } from "@nestjs/swagger";
 import { Prisma } from "@prisma/client";
 import { Transform } from "class-transformer";
-import { IsInt, IsOptional, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { ApplyNestedOptional } from "src/common/class-validators/ApplyNested";
 import { IsPrismaIntFilter } from "src/common/class-validators/IsPrismaIntFilter";
 import { LocationIdDtoOptional } from "src/common/dto/common.dto";
@@ -29,7 +29,12 @@ export class FindAllBookPublicDto extends FindAllDto {
     location_id: number[];
 
     @ApiProperty()
-    busy: boolean;
+    @ApiPropertyOptional()
+    busy?: boolean;
+
+    @ApiProperty()
+    @ApiPropertyOptional()
+    search?: string;
 }
 
 export class FindOneBookPublicDto extends LocationIdDtoOptional {
@@ -50,4 +55,22 @@ export class FindAllPublicStats extends FindAllDto {
 
     @ApiProperty()
     book_id: number;
+}
+
+export class ExpiredRentFilterDto {
+    @ApiProperty()
+    id?: number;
+
+    @ApiProperty()
+    gender?: string;
+}
+
+export class ExpiredRentDto extends FindAllDto{
+    @ApiProperty()
+    filter?: ExpiredRentFilterDto;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    phone: string;
 }
