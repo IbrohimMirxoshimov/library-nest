@@ -20,6 +20,7 @@ import { PublishingModule } from './modules/publishing/publishing.module';
 import { RoleModule } from './modules/role/role.module';
 import { SmsModule } from './modules/sms/sms.module';
 import { StockModule } from './modules/stock/stock.module';
+import { FileModule } from './modules/file/file.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { StockModule } from './modules/stock/stock.module';
     RoleModule,
     SmsModule,
     StockModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [
