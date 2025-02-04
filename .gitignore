@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /build
+/secret
 
 # Logs
 logs
@@ -35,7 +36,6 @@ package-lock.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
 # dotenv environment variable files
 .env
 .env.development.local
