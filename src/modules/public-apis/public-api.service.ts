@@ -23,7 +23,7 @@ export class PublicApiService {
           select: {
             id: true,
             name: true,
-            image: true,
+            images: true,
             description: true,
             updated_at: true,
             stocks: {
@@ -51,7 +51,7 @@ export class PublicApiService {
         select: {
           id: true,
           name: true,
-          image: true,
+          images: true,
           description: true,
           updated_at: true,
           stocks: {

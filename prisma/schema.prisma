@@ -10,10 +10,13 @@ datasource db {
 }
 
 model file {
-  id   String @id @default(uuid())
-  name String
-  size Int
-  sort Int
+  id     String @id @default(uuid())
+  name   String
+  size   Int
+  sort   Int
+  //
+  bookId Int?
+  book   book?  @relation(fields: [bookId], references: [id])
 }
 
 model role {
@@ -290,7 +293,6 @@ model book {
   name            String
   searchable_name String
   description     String?
-  image           String?
   rent_duration   Int?
   printed_at      DateTime?
   pages           Int?
@@ -307,9 +309,10 @@ model book {
   // 
   author          author?         @relation(fields: [author_id], references: [id])
   collection      collection?     @relation(fields: [collection_id], references: [id])
-  // 
+  //
   stocks          stock[]
   comment         comment[]
+  images          file[]
 
   // TODO add tags string array column for searching
 }

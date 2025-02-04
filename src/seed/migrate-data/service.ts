@@ -312,6 +312,7 @@ export class MigrationOldDataService {
     await this.prisma.$transaction(async (tx) => {
       for (const book of books) {
         try {
+          // TODO download add images
           await tx.book.upsert({
             where: { id: book.id },
             create: {
@@ -321,7 +322,6 @@ export class MigrationOldDataService {
                 book.name + ' ' + (author_map[book.authorId]?.name || ''),
               ),
               description: book.description,
-              image: book.image,
               rent_duration: book.rentDuration,
               pages: book.pages,
               sort: book.sort,
