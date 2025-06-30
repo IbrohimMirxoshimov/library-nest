@@ -38,7 +38,7 @@ export class FileController {
   ) {
     const fileData = {
       size: file.size,
-      sort: parseInt(file.sort),
+      sort: parseInt(file.sort, 10),
       name: file.filename,
       public: file.public === 'true' || file.public === true,
     };
