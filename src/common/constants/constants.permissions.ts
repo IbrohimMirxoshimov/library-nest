@@ -1,4 +1,3 @@
-// constants/permission.constant.ts
 export const Permissions = {
   // User permissions
   USER_CREATE: 1,
@@ -84,4 +83,9 @@ export const Permissions = {
   REGION_DELETE: 124,
 
   STATISTICS_READ: 131,
+
+  // File permissions
+  FILE_CREATE: 141,
+  FILE_READ: 142,
+  FILE_DELETE: 143,
 } as const;

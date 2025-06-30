@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindAllLogDto } from '@/modules/log/log.dto';
 import {
   getPaginationOptions,
   getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { FindAllLogDto } from './log.dto';
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class LogService {

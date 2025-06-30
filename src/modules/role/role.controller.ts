@@ -8,12 +8,16 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { CreateRoleDto, FindAllRoleDto, UpdateRoleDto } from './role.dto';
-import { RoleService } from './role.service';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { FindOneLiDto } from '@/common/dto/common.dto';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
+import { RoleService } from '@/modules/role/role.service';
+import {
+  CreateRoleDto,
+  FindAllRoleDto,
+  UpdateRoleDto,
+} from '@/modules/role/role.dto';
 
 @ApiBearerAuth()
 @Controller('roles')

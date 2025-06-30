@@ -4,20 +4,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { stock, UserStatus } from '@prisma/client';
-import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { getDateDifferenceInDays } from 'src/utils/date.util';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ReqUser } from '../auth/auth.interface';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindOneLiDto, FindOneWithLiDto } from '@/common/dto/common.dto';
+import { ReqUser } from '@/modules/auth/auth.interface';
 import {
   CreateCommentToRentDto,
   CreateRentDto,
   FindAllRentDto,
   UpdateRentDto,
-} from './rents.dto';
+} from '@/modules/rents/rents.dto';
+import { getDateDifferenceInDays } from '@/utils/date.util';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class RentService {

@@ -1,17 +1,17 @@
 import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthorsService } from './authors.service';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { ReqUser } from '../auth/auth.interface';
-import { RequirePermissions } from '../../common/decorators/permissions.decorators';
-import { Permissions } from '../../common/constants/constants.permissions';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { FindOneDto } from '@/common/dto/common.dto';
+import { AuthorsService } from '@/modules/authors/authors.service';
 import {
   CreateAuthorDto,
   GetListAuthorDto,
   UpdateAuthorDto,
-} from './authors.dto';
-import { FindOneDto } from '../../common/dto/common.dto';
-import { throwErrorIfNotFound } from '../../utils/response.utils';
+} from '@/modules/authors/authors.dto';
+import { ReqUser } from '@/modules/auth/auth.interface';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
 
 @ApiBearerAuth()
 @Controller('authors')

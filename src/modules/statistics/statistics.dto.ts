@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { getDateAfterYear } from 'src/utils/date.util';
+import { getDateAfterYear } from '@/utils/date.util';
 
 export class GetTopReadingBooksDto {
   @ApiProperty({ default: 1 })

@@ -3,8 +3,8 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { ReqUser } from '../../modules/auth/auth.interface';
 import { Request } from 'express';
+import { ReqUser } from '@/modules/auth/auth.interface';
 
 export const CurrentUser = createParamDecorator(
   (data: keyof ReqUser | undefined, ctx: ExecutionContext) => {

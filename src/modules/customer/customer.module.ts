@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CustomerService } from './customer.service';
-import { CustomerController } from './customer.controller';
+import { CustomerService } from '@/modules/customer/customer.service';
+import { CustomerController } from '@/modules/customer/customer.controller';
 
 @Module({
   controllers: [CustomerController],

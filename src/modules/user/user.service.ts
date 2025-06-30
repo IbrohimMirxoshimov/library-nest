@@ -1,14 +1,18 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { user, UserStatus } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { FindOneDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindOneDto } from '@/common/dto/common.dto';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import {
+  CreateUserDto,
+  FindAllUserDto,
+  UpdateUserDto,
+} from '@/modules/user/user.dto';
 import {
   getPaginationOptions,
   getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreateUserDto, FindAllUserDto, UpdateUserDto } from './user.dto';
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class UserService implements ICrudService<user> {

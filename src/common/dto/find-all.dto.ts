@@ -1,8 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional } from 'class-validator';
-import { ApiEnum } from 'src/utils/swagger/ApiEnum';
-import { transformToNumber } from 'src/utils/transformers';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { transformToNumber } from '@/utils/transformers';
 
 export enum SqlOrderEnum {
   ASC = 'asc',

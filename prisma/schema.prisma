@@ -10,13 +10,14 @@ datasource db {
 }
 
 model file {
-  id     String @id @default(uuid())
+  id     String  @id @default(uuid())
   name   String
   size   Int
   sort   Int
   //
   bookId Int?
-  book   book?  @relation(fields: [bookId], references: [id])
+  book   book?   @relation(fields: [bookId], references: [id])
+  public Boolean @default(false)
 }
 
 model role {

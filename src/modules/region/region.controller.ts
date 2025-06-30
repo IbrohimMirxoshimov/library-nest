@@ -8,16 +8,16 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { throwErrorIfNotFound } from 'src/utils/response.utils';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { FindOneLiDto } from '@/common/dto/common.dto';
+import { RegionService } from '@/modules/region/region.service';
 import {
   CreateRegionDto,
   FindAllRegionDto,
   UpdateRegionDto,
-} from './region.dto';
-import { RegionService } from './region.service';
+} from '@/modules/region/region.dto';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
 
 @ApiBearerAuth()
 @Controller('regions')

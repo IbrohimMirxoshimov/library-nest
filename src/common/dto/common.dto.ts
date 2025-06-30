@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsInt, IsOptional } from 'class-validator';
-import { transformToNumber } from 'src/utils/transformers';
+import { transformToNumber } from '@/utils/transformers';
 
 /**
  * Bu DTO ishlatilgan joylar odatda swaggerga chiqmaydi

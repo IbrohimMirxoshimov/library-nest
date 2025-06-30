@@ -1,4 +1,3 @@
-// create-rent.dto.ts
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';

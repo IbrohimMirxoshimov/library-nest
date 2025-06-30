@@ -1,13 +1,17 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { book } from '@prisma/client';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindOneLiDto } from '@/common/dto/common.dto';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import {
+  CreateBookDto,
+  FindAllBookDto,
+  UpdateBookDto,
+} from '@/modules/book/book.dto';
 import {
   getPaginationOptions,
   getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreateBookDto, FindAllBookDto, UpdateBookDto } from './book.dto';
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class BookService implements ICrudService<book> {

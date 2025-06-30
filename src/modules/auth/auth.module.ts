@@ -1,13 +1,11 @@
-// src/modules/auth/auth.module.ts
-
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { PrismaModule } from '../../prisma/prisma.module';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { app_config } from 'src/config/app.config';
+import { PrismaModule } from '@/prisma/prisma.module';
+import { AuthController } from '@/modules/auth/auth.controller';
+import { AuthService } from '@/modules/auth/auth.service';
+import { JwtStrategy } from '@/modules/auth/jwt.strategy';
+import { app_config } from '@/config/app.config';
 
 @Module({
   imports: [

@@ -1,5 +1,5 @@
-import { FindOneDto } from 'src/common/dto/common.dto';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
+import { FindOneDto } from '@/common/dto/common.dto';
+import { FindAllDto } from '@/common/dto/find-all.dto';
 
 export interface ICrudService<T> {
   create(dto: unknown, ...rest: unknown[]): Promise<T | void>;

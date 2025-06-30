@@ -1,18 +1,18 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
-import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { ReqUser } from '../auth/auth.interface';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { FindOneLiDto, FindOneWithLiDto } from '@/common/dto/common.dto';
+import { ReqUser } from '@/modules/auth/auth.interface';
 import {
   CreateCommentToRentDto,
   CreateRentDto,
   FindAllRentDto,
   UpdateRentDto,
-} from './rents.dto';
-import { RentService } from './rents.service';
+} from '@/modules/rents/rents.dto';
+import { RentService } from '@/modules/rents/rents.service';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
 
 @ApiBearerAuth()
 @Controller('rents')

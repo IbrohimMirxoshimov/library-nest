@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { MigrationOldDataService } from './service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaModule } from '@/prisma/prisma.module';
+import { PrismaService } from '@/prisma/prisma.service';
+import { MigrationOldDataService } from '@/seed/migrate-data/service';
 
 const seedOldDb = async () => {
   const app = await NestFactory.create(PrismaModule);

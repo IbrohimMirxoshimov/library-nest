@@ -1,19 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma, user } from '@prisma/client';
-import { FindOneWithLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { ilike } from 'src/prisma/prisma.utils';
-import { omitProperty } from 'src/utils/object.utils';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
+import { PrismaService } from '@/prisma/prisma.service';
+import { ilike } from '@/prisma/prisma.utils';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import { FindOneWithLiDto } from '@/common/dto/common.dto';
 import {
   CreateCustomerDto,
   FindAllCustomerDto,
   UpdateCustomerDto,
-} from './customer.dto';
+} from '@/modules/customer/customer.dto';
+import { omitProperty } from '@/utils/object.utils';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class CustomerService implements ICrudService<user> {

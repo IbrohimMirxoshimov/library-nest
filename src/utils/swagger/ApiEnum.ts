@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { enumEntires } from '../object.utils';
+import { enumEntires } from '@/utils/object.utils';
 
 export const ApiEnum = (
   entity: object,

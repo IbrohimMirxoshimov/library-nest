@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { BookImportance, StockStatus, UserStatus } from '@prisma/client';
 import { Pool } from 'pg';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { app_config } from 'src/config/app.config';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { arrayToMap } from 'src/utils/object.utils';
-import {
-  capitalizeFirstLetter,
-  onlyAbcLowercase,
-} from 'src/utils/string.utils';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { app_config } from '@/config/app.config';
+import { PrismaService } from '@/prisma/prisma.service';
+import { arrayToMap } from '@/utils/object.utils';
+import { capitalizeFirstLetter, onlyAbcLowercase } from '@/utils/string.utils';
 
 function fixStringFields(str: string) {
   if (str) {
@@ -40,7 +37,7 @@ export class MigrationOldDataService {
     // await this.migrateRents();
     // await this.migrateComments();
     await this.migratePublishings();
-    
+
     // TODO
     // await this.migrateSMSBulks();
     // await this.migrateSMS();

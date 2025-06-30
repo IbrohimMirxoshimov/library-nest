@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from 'src/app.module';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { AuthService } from 'src/modules/auth/auth.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { AppModule } from '@/app.module';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { AuthService } from '@/modules/auth/auth.service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 const seedMain = async () => {
   const app = await NestFactory.create(AppModule);
