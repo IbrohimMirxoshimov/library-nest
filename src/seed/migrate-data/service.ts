@@ -40,7 +40,7 @@ export class MigrationOldDataService {
     // await this.migrateRents();
     // await this.migrateComments();
     await this.migratePublishings();
-    
+
     // TODO
     // await this.migrateSMSBulks();
     // await this.migrateSMS();
