@@ -7,10 +7,10 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { ApiEnum } from 'src/utils/swagger/ApiEnum';
-import { ClassImplementation } from 'src/utils/type.utils';
+import { ApplyNestedOptional } from '@/common/class-validators/ApplyNested';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { ClassImplementation } from '@/utils/type.utils';
 
 export class UploadFileDto {
   @ApiProperty({

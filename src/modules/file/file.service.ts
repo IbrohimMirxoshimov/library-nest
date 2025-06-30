@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { CreateFileDto, FileFindOneDto, FindAllFileDto } from './file.dto';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 import * as fsPromises from 'node:fs/promises';
+import { PrismaService } from '@/prisma/prisma.service';
+import {
+  CreateFileDto,
+  FileFindOneDto,
+  FindAllFileDto,
+} from '@/modules/file/file.dto';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class FileService {

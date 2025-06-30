@@ -1,13 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { stock, StockStatus } from '@prisma/client';
-import { FindOneLiDto, FindOneWithLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindOneLiDto, FindOneWithLiDto } from '@/common/dto/common.dto';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import {
+  CreateStockDto,
+  FindAllStockDto,
+  UpdateStockDto,
+} from '@/modules/stock/stock.dto';
 import {
   getPaginationOptions,
   getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreateStockDto, FindAllStockDto, UpdateStockDto } from './stock.dto';
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class StockService implements ICrudService<stock> {

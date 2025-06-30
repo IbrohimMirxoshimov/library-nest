@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { region } from '@prisma/client';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindOneLiDto } from '@/common/dto/common.dto';
+import { ICrudService } from '@/common/interfaces/crud.interface';
 import {
   CreateRegionDto,
   FindAllRegionDto,
   UpdateRegionDto,
-} from './region.dto';
+} from '@/modules/region/region.dto';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class RegionService implements ICrudService<region> {

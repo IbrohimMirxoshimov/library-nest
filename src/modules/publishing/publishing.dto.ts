@@ -1,12 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
-import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { ApiEnum } from 'src/utils/swagger/ApiEnum';
-import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
-import { ClassImplementation } from 'src/utils/type.utils';
+import { ApplyNestedOptional } from '@/common/class-validators/ApplyNested';
+import { IsPrismaIntFilter } from '@/common/class-validators/IsPrismaIntFilter';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { ApiPrismaIntFilter } from '@/utils/swagger/ApiPrismaIntFilter';
+import { ClassImplementation } from '@/utils/type.utils';
 
 export class CreatePublishingDto
   implements ClassImplementation<Prisma.publishingCreateInput>

@@ -11,16 +11,20 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { FileFindOneDto, FindAllFileDto, UploadFileDto } from './file.dto';
-import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileWithBodyInterceptor } from './file-with-body.interceptor';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Response } from 'express';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { Public } from '@/common/decorators/public.decorator';
+import { FileService } from '@/modules/file/file.service';
+import { FileWithBodyInterceptor } from '@/modules/file/file-with-body.interceptor';
+import {
+  FileFindOneDto,
+  FindAllFileDto,
+  UploadFileDto,
+} from '@/modules/file/file.dto';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
 
 @Controller('files')
 export class FileController {

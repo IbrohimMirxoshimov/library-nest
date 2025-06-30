@@ -1,5 +1,5 @@
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { FindAllResponse } from 'src/common/interfaces/crud.interface';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { FindAllResponse } from '@/common/interfaces/crud.interface';
 
 export function getPaginationOptions(dto: FindAllDto) {
   return {

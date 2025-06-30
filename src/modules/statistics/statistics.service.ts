@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { subDays } from 'date-fns';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { GetRentCountsDto, GetTopReadingBooksDto } from './statistics.dto';
-import { LocationIdDto } from 'src/common/dto/common.dto';
 import { BookImportance } from '@prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
+import { LocationIdDto } from '@/common/dto/common.dto';
+import {
+  GetRentCountsDto,
+  GetTopReadingBooksDto,
+} from '@/modules/statistics/statistics.dto';
 
 @Injectable()
 export class StatisticsService {

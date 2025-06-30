@@ -1,14 +1,14 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
-import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
+import { ApplyNestedOptional } from '@/common/class-validators/ApplyNested';
 import {
   DateTimeRangeDto,
   IsDateTimeRange,
-} from 'src/common/class-validators/IsDateTimeRange';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { ApiEnum } from 'src/utils/swagger/ApiEnum';
-import { ClassImplementation } from 'src/utils/type.utils';
+} from '@/common/class-validators/IsDateTimeRange';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { ClassImplementation } from '@/utils/type.utils';
 
 class LogFilterDto implements ClassImplementation<Prisma.logWhereInput> {
   @IsDateTimeRange()

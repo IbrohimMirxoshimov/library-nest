@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { sms } from '@prisma/client';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import { FindOneLiDto } from '@/common/dto/common.dto';
+import {
+  CreateSmsDto,
+  FindAllSmsDto,
+  UpdateSmsDto,
+} from '@/modules/sms/sms.dto';
 import {
   getPaginationOptions,
   getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
-import { CreateSmsDto, FindAllSmsDto, UpdateSmsDto } from './sms.dto';
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class SmsService implements ICrudService<sms> {

@@ -1,4 +1,3 @@
-// create-rent.dto.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import {
@@ -11,14 +10,14 @@ import {
 import {
   DateTimeRangeDto,
   IsDateTimeRange,
-} from 'src/common/class-validators/IsDateTimeRange';
-import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
-import { LocationIdDto } from 'src/common/dto/common.dto';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { ApiEnum } from 'src/utils/swagger/ApiEnum';
-import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
-import { ClassImplementation } from 'src/utils/type.utils';
-import { ApplyNestedOptional } from '../../common/class-validators/ApplyNested';
+} from '@/common/class-validators/IsDateTimeRange';
+import { IsPrismaIntFilter } from '@/common/class-validators/IsPrismaIntFilter';
+import { LocationIdDto } from '@/common/dto/common.dto';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApplyNestedOptional } from '@/common/class-validators/ApplyNested';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { ApiPrismaIntFilter } from '@/utils/swagger/ApiPrismaIntFilter';
+import { ClassImplementation } from '@/utils/type.utils';
 
 export class CreateRentDto
   extends LocationIdDto

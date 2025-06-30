@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { getPaginationResponse } from 'src/utils/pagination.utils';
+import { PrismaService } from '@/prisma/prisma.service';
 import {
   FindAllBookPublicDto,
   FindAllPublicStats,
   FindOneBookPublicDto,
-} from './public.dto';
+} from '@/modules/public-apis/public.dto';
+import { getPaginationResponse } from '@/utils/pagination.utils';
 
 @Injectable()
 export class PublicApiService {

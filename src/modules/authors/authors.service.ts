@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { author } from '@prisma/client';
-import { FindOneDto } from '../../common/dto/common.dto';
-import { ICrudService } from '../../common/interfaces/crud.interface';
-import { PrismaService } from '../../prisma/prisma.service';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from '../../utils/pagination.utils';
-import { ReqUser } from '../auth/auth.interface';
+import { PrismaService } from '@/prisma/prisma.service';
+import { FindOneDto } from '@/common/dto/common.dto';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import { ReqUser } from '@/modules/auth/auth.interface';
 import {
   CreateAuthorDto,
   GetListAuthorDto,
   UpdateAuthorDto,
-} from './authors.dto';
+} from '@/modules/authors/authors.dto';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class AuthorsService implements ICrudService<author> {

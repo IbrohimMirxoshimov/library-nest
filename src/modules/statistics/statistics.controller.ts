@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { StatisticsService } from './statistics.service';
-import { LocationIdDto } from 'src/common/dto/common.dto';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { Permissions } from 'src/common/constants/constants.permissions';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { LocationIdDto } from '@/common/dto/common.dto';
+import { StatisticsService } from '@/modules/statistics/statistics.service';
 
 @Controller('statistics')
 export class StatisticsController {

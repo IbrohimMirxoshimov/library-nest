@@ -8,15 +8,15 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
-import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
-import { IsUzbPhoneNumber } from 'src/common/class-validators/IsUzbPhoneNumber';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { ApiEnum } from 'src/utils/swagger/ApiEnum';
-import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
-import { ClassImplementation } from 'src/utils/type.utils';
-import { SearchableField } from '../../common/class-validators/SearchableField';
-import { LocationIdDto } from '../../common/dto/common.dto';
+import { ApplyNestedOptional } from '@/common/class-validators/ApplyNested';
+import { IsPrismaIntFilter } from '@/common/class-validators/IsPrismaIntFilter';
+import { IsUzbPhoneNumber } from '@/common/class-validators/IsUzbPhoneNumber';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { ApiPrismaIntFilter } from '@/utils/swagger/ApiPrismaIntFilter';
+import { ClassImplementation } from '@/utils/type.utils';
+import { SearchableField } from '@/common/class-validators/SearchableField';
+import { LocationIdDto } from '@/common/dto/common.dto';
 
 class CustomerAddressDto
   implements ClassImplementation<Prisma.addressUncheckedCreateWithoutUserInput>

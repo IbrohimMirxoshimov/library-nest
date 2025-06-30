@@ -1,4 +1,3 @@
-// constants/permission.constant.ts
 export const Permissions = {
   // User permissions
   USER_CREATE: 1,

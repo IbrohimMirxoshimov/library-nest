@@ -1,5 +1,3 @@
-// src/modules/auth/auth.dto.ts
-
 import {
   IsNotEmpty,
   IsString,
@@ -7,7 +5,7 @@ import {
   IsPhoneNumber,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUzbPhoneNumber } from 'src/common/class-validators/IsUzbPhoneNumber';
+import { IsUzbPhoneNumber } from '@/common/class-validators/IsUzbPhoneNumber';
 
 export class LoginDto {
   @ApiProperty({ example: '998001112233', description: 'User phone number' })

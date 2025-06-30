@@ -1,7 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { Public } from 'src/common/decorators/public.decorator';
-import { PublicApiService } from './public-api.service';
-import { FindAllBookPublicDto, FindOneBookPublicDto } from './public.dto';
+import { Public } from '@/common/decorators/public.decorator';
+import { PublicApiService } from '@/modules/public-apis/public-api.service';
+import {
+  FindAllBookPublicDto,
+  FindOneBookPublicDto,
+} from '@/modules/public-apis/public.dto';
 
 @Controller('public')
 export class PublicApiController {

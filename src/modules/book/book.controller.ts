@@ -8,12 +8,16 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { CreateBookDto, FindAllBookDto, UpdateBookDto } from './book.dto';
-import { BookService } from './book.service';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { FindOneLiDto } from '@/common/dto/common.dto';
+import {
+  CreateBookDto,
+  FindAllBookDto,
+  UpdateBookDto,
+} from '@/modules/book/book.dto';
+import { BookService } from '@/modules/book/book.service';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
 
 @ApiBearerAuth()
 @Controller('books')

@@ -1,5 +1,3 @@
-// src/modules/auth/auth.interface.ts
-
 export interface ReqUser {
   id: number;
   roleId: number;

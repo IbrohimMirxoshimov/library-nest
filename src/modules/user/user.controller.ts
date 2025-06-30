@@ -8,12 +8,16 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Permissions } from 'src/common/constants/constants.permissions';
-import { RequirePermissions } from 'src/common/decorators/permissions.decorators';
-import { FindOneDto } from 'src/common/dto/common.dto';
-import { throwErrorIfNotFound } from 'src/utils/response.utils';
-import { CreateUserDto, FindAllUserDto, UpdateUserDto } from './user.dto';
-import { UserService } from './user.service';
+import { Permissions } from '@/common/constants/constants.permissions';
+import { RequirePermissions } from '@/common/decorators/permissions.decorators';
+import { FindOneDto } from '@/common/dto/common.dto';
+import { UserService } from '@/modules/user/user.service';
+import {
+  CreateUserDto,
+  FindAllUserDto,
+  UpdateUserDto,
+} from '@/modules/user/user.dto';
+import { throwErrorIfNotFound } from '@/utils/response.utils';
 
 @ApiBearerAuth()
 @Controller('users')

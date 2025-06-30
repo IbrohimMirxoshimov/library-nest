@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ReqUser } from 'src/modules/auth/auth.interface';
+import { ReqUser } from '@/modules/auth/auth.interface';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

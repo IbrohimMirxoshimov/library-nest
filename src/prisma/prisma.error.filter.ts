@@ -1,4 +1,3 @@
-// prisma.error.filter.ts
 import {
   ExceptionFilter,
   Catch,

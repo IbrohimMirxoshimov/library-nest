@@ -2,10 +2,10 @@ import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
-import { AppModule } from './app.module';
-import { MainValidationPipe } from './common/pipes/main-validation.pipe';
-import { app_config } from './config/app.config';
-import { PrismaErrorFilter } from './prisma/prisma.error.filter';
+import { PrismaErrorFilter } from '@/prisma/prisma.error.filter';
+import { MainValidationPipe } from '@/common/pipes/main-validation.pipe';
+import { app_config } from '@/config/app.config';
+import { AppModule } from '@/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

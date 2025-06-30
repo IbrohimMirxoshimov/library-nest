@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { publishing } from '@prisma/client';
-import { FindOneLiDto } from 'src/common/dto/common.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import {
-  getPaginationOptions,
-  getPaginationResponse,
-} from 'src/utils/pagination.utils';
-import { ICrudService } from '../../common/interfaces/crud.interface';
+import { PrismaService } from '@/prisma/prisma.service';
+import { ICrudService } from '@/common/interfaces/crud.interface';
+import { FindOneLiDto } from '@/common/dto/common.dto';
 import {
   CreatePublishingDto,
   FindAllPublishingDto,
   UpdatePublishingDto,
-} from './publishing.dto';
+} from '@/modules/publishing/publishing.dto';
+import {
+  getPaginationOptions,
+  getPaginationResponse,
+} from '@/utils/pagination.utils';
 
 @Injectable()
 export class PublishingService implements ICrudService<publishing> {

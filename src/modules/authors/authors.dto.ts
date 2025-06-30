@@ -1,4 +1,3 @@
-import { ClassImplementation } from '../../utils/type.utils';
 import { Prisma } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
@@ -8,10 +7,11 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { FindAllDto } from '../../common/dto/find-all.dto';
 import { Type } from 'class-transformer';
-import { ApiEnum } from '../../utils/swagger/ApiEnum';
-import { SearchableField } from '../../common/class-validators/SearchableField';
+import { SearchableField } from '@/common/class-validators/SearchableField';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApiEnum } from '@/utils/swagger/ApiEnum';
+import { ClassImplementation } from '@/utils/type.utils';
 
 export class CreateAuthorDto
   implements ClassImplementation<Prisma.authorCreateInput>

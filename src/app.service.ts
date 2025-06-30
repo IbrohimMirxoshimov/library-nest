@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ReqUser } from './modules/auth/auth.interface';
+import { ReqUser } from '@/modules/auth/auth.interface';
 
 @Injectable()
 export class AppService {

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { FileService } from './file.service';
-import { FileController } from './file.controller';
 import { MulterModule } from '@nestjs/platform-express';
-import { fileDiskStorage } from './file-disk-storage';
+import { FileService } from '@/modules/file/file.service';
+import { FileController } from '@/modules/file/file.controller';
+import { fileDiskStorage } from '@/modules/file/file-disk-storage';
 
 @Module({
   imports: [

@@ -2,12 +2,12 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import { IsInt, IsOptional, IsString } from 'class-validator';
-import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
-import { IsPrismaIntFilter } from 'src/common/class-validators/IsPrismaIntFilter';
-import { LocationIdDtoOptional } from 'src/common/dto/common.dto';
-import { FindAllDto } from 'src/common/dto/find-all.dto';
-import { ApiPrismaIntFilter } from 'src/utils/swagger/ApiPrismaIntFilter';
-import { transformToNumber } from 'src/utils/transformers';
+import { ApplyNestedOptional } from '@/common/class-validators/ApplyNested';
+import { IsPrismaIntFilter } from '@/common/class-validators/IsPrismaIntFilter';
+import { LocationIdDtoOptional } from '@/common/dto/common.dto';
+import { FindAllDto } from '@/common/dto/find-all.dto';
+import { ApiPrismaIntFilter } from '@/utils/swagger/ApiPrismaIntFilter';
+import { transformToNumber } from '@/utils/transformers';
 
 export class BookFilterPublicDto {
   @ApiPropertyOptional()
