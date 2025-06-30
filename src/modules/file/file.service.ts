@@ -6,7 +6,8 @@ import {
 } from 'src/utils/pagination.utils';
 import { CreateFileDto, FileFindOneDto, FindAllFileDto } from './file.dto';
 import * as path from 'node:path';
-import * as fs from 'node:fs/promises';
+import * as fs from 'node:fs';
+import * as fsPromises from 'node:fs/promises';
 
 @Injectable()
 export class FileService {
@@ -24,7 +25,7 @@ export class FileService {
     });
     if (file) {
       const filepath = path.join(process.cwd(), 'uploads', file.name);
-      await fs.rm(filepath);
+      await fsPromises.rm(filepath);
     }
   }
 
@@ -45,5 +46,10 @@ export class FileService {
     return this.prisma.file.create({
       data: dto,
     });
+  }
+
+  async getFileStream(fileName: string) {
+    const filepath = path.join(process.cwd(), 'uploads', fileName);
+    return fs.createReadStream(filepath);
   }
 }

@@ -1,6 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ApplyNestedOptional } from 'src/common/class-validators/ApplyNested';
 import { FindAllDto } from 'src/common/dto/find-all.dto';
 import { ApiEnum } from 'src/utils/swagger/ApiEnum';
@@ -19,6 +25,12 @@ export class UploadFileDto {
     description: 'The sequence order of the file among multiple uploads',
   })
   sort: number;
+
+  @ApiPropertyOptional({
+    default: false,
+    description: 'Whether the file is public or private',
+  })
+  public: boolean;
 }
 
 export class CreateFileDto
@@ -32,6 +44,9 @@ export class CreateFileDto
 
   @IsNumber()
   sort: number;
+
+  @IsBoolean()
+  public: boolean;
 }
 
 export class FileFindOneDto {

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
@@ -19,16 +20,15 @@ import { FileFindOneDto, FindAllFileDto, UploadFileDto } from './file.dto';
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileWithBodyInterceptor } from './file-with-body.interceptor';
-import * as path from 'node:path';
-import { createReadStream } from 'node:fs';
+import { Public } from 'src/common/decorators/public.decorator';
 
-@ApiBearerAuth()
 @Controller('files')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
   @RequirePermissions(Permissions.FILE_CREATE)
   @Post()
+  @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileWithBodyInterceptor)
   @UseInterceptors(FileInterceptor('file'))
@@ -40,36 +40,54 @@ export class FileController {
       size: file.size,
       sort: parseInt(file.sort),
       name: file.filename,
+      public: file.public === 'true' || file.public === true,
     };
     return this.fileService.create(fileData);
   }
 
   @RequirePermissions(Permissions.FILE_READ)
   @Post('get-list')
+  @ApiBearerAuth()
   findAll(@Body() dto: FindAllFileDto) {
     return this.fileService.findAll(dto);
   }
 
   @RequirePermissions(Permissions.FILE_READ)
   @Get('/:id')
+  @ApiBearerAuth()
   findOne(@Param() dto: FileFindOneDto) {
     return this.fileService.findOne(dto).then(throwErrorIfNotFound);
   }
 
   @RequirePermissions(Permissions.FILE_READ)
-  @Get('/:id/raw')
+  @Get('/:id/secure-raw')
+  @ApiBearerAuth()
   async getRaw(@Param() dto: FileFindOneDto, @Res() res: Response) {
     const file = await this.fileService.findOne(dto);
     if (!file) {
       throw new NotFoundException();
     }
-    const filepath = path.join(process.cwd(), 'uploads', file.name);
-    const stream = createReadStream(filepath);
+    const stream = await this.fileService.getFileStream(file.name);
+    stream.pipe(res);
+  }
+
+  @Public()
+  @Get('/:id/public-raw')
+  async getPublicRaw(@Param() dto: FileFindOneDto, @Res() res: Response) {
+    const file = await this.fileService.findOne(dto);
+    if (!file) {
+      throw new NotFoundException();
+    }
+    if (!file.public) {
+      throw new ForbiddenException('File is not public');
+    }
+    const stream = await this.fileService.getFileStream(file.name);
     stream.pipe(res);
   }
 
   @RequirePermissions(Permissions.FILE_DELETE)
   @Delete('/:id')
+  @ApiBearerAuth()
   remove(@Param() find_dto: FileFindOneDto) {
     return this.fileService.remove(find_dto);
   }

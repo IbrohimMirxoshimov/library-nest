@@ -10,10 +10,11 @@ datasource db {
 }
 
 model file {
-  id   String @id @default(uuid())
-  name String
-  size Int
-  sort Int
+  id     String  @id @default(uuid())
+  name   String
+  size   Int
+  sort   Int
+  public Boolean @default(false)
 }
 
 model role {
